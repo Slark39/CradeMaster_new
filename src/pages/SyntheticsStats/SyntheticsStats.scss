@@ -1,0 +1,85 @@
+.SyntheticsStats {
+  text-align: left;
+
+  .download-csv {
+    height: 4rem;
+  }
+}
+
+.SyntheticsStats-table-wrap {
+  overflow-x: auto;
+
+  .sticky-left {
+    position: sticky;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    background: var(--main-bg-color);
+  }
+}
+
+.MarketCard-config-tooltip {
+  .Tooltip-popup {
+    min-width: 34rem;
+  }
+}
+
+.SyntheticsStats .csv-link {
+  margin-top: 20px;
+}
+
+.SyntheticsStats-tooltip {
+  .Tooltip-popup {
+    min-width: 36rem;
+  }
+}
+
+.SyntheticsStats td,
+.SyntheticsStats th {
+  padding: 7px 10px;
+  position: relative;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.SyntheticsStats {
+  .cell {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 4.5rem;
+  }
+
+  th {
+    text-align: center;
+  }
+}
+
+.SyntheticsStats .ShareBar {
+  margin-top: 4px;
+}
+
+.SyntheticsStats td .SyntheticsStats-share-bar {
+  background: var(--color-gray-800);
+  position: relative;
+  margin-top: 5px;
+  height: 2px;
+}
+
+.SyntheticsStats td .SyntheticsStats-share-bar-fill {
+  height: 100%;
+  background: var(--color-white);
+}
+
+.SyntheticsStats .warn .SyntheticsStats-share-bar-fill {
+  background: orange;
+}
+
+.SyntheticsStats .warn {
+  color: orange;
+}
+
+.SyntheticsStats-swap-section {
+  display: flex;
+}

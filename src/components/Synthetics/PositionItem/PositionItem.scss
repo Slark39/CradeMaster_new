@@ -1,0 +1,43 @@
+.Position-buttons-container {
+  margin-top: 1.2rem;
+}
+
+.Position-collateral-amount {
+  margin-left: 0;
+}
+
+.Position-item-action {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+
+  .Position-item-buttons {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-gap: 1rem;
+  }
+}
+
+.PositionItem-collateral-tooltip {
+  .Tooltip-popup {
+    min-width: 32rem;
+  }
+}
+
+.position-list-collateral {
+  display: flex;
+  align-items: flex-end;
+}
+
+.position-list-collateral.isSmall {
+  justify-content: flex-end;
+}
+
+@media (max-width: 800px) {
+  .PositionItem-collateral-tooltip {
+    .Tooltip-popup {
+      min-width: 22rem;
+    }
+  }
+}

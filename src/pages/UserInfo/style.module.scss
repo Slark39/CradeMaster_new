@@ -1,0 +1,137 @@
+.wrapper{
+  @apply flex flex-col items-center justify-between w-full mr-[150px] lg:w-2/3 max-lg:w-3/4 mx-auto max-lg:ml-60 mt-20;
+  .navbar{
+    @apply flex mt-30 flex-row justify-between items-center w-full;
+    .user{
+      @apply flex flex-row justify-between items-center;
+      .icon{
+        @apply flex mr-8 ;
+      }
+      .username{
+        @apply flex flex-col h-[70px] justify-between   items-start;
+        .social{
+          @apply flex flex-row justify-start items-center;
+        }
+      }
+    }
+    .uid{
+      @apply flex flex-col justify-between items-start text-white;
+      .title{
+        @apply text-gray-500;
+      }
+    }
+    .vip{
+      @apply flex flex-col justify-between items-start text-white;
+      .title{
+        @apply text-gray-500;
+      }
+    }
+    .following{
+      @apply flex flex-col justify-between items-start text-white;
+      .title{
+        @apply text-gray-500;
+      }
+    }
+    .followers{
+      @apply flex flex-col justify-between items-start text-white;
+      .title{
+        @apply text-gray-500;
+      }
+    }
+  }
+  .stepper{
+    @apply flex flex-col w-full mt-20 justify-between items-start border-b-[1px] border-tableColor p-15;
+    .title{
+      @apply flex flex-row justify-between items-center w-full text-white text-[20px];
+    }
+    .progress{
+      @apply flex flex-row mt-10 w-full justify-between items-center;
+      .number{
+        @apply bg-white rotate-45 w-20 h-20 text-black text-center rounded-5;
+      }
+      .number1{
+        @apply bg-gray-500 rotate-45 w-20 h-20 text-white text-center rounded-5;
+      }
+      .bar1{
+        @apply h-1 bg-tableColor w-full basis-1/2;
+      }
+      .bar2{
+        @apply h-1 bg-tableColor w-full basis-1/4;
+      }
+      .bar3{
+        @apply h-1 bg-[#16182e] w-full basis-1/4 ;
+      }
+    }
+    .content{
+    @apply flex flex-row mt-10 justify-between items-center w-full ;
+      .verify{
+        @apply  flex flex-row justify-between items-center rounded-15 bg-[#232321]   p-10 basis-1/2 h-[200px] border-yellow-300 border-[1px] w-full;
+        .left{
+          @apply flex flex-col h-4/5 justify-between items-start basis-3/5 w-full;
+          .btn{
+            @apply rounded-5 bg-[#fcd535] p-4 text-center  w-1/2 text-tableColor;
+          }
+          .title{
+            @apply flex flex-col items-start justify-between;
+          }
+        }
+      }
+      .deposit{
+      @apply flex flex-col ml-10 mr-10 justify-between items-start rounded-15    p-20 basis-1/4 h-[200px] border-gray-500 border-[1px] w-full;
+      }
+       .trade{
+      @apply flex flex-col justify-between items-start rounded-15   p-20 basis-1/4 h-[200px] border-gray-500 border-[1px] w-full;
+      }
+      }
+  }
+  .estimated{
+    @apply flex flex-row justify-between mt-20  items-center w-full ;
+    .label{
+      @apply text-white text-[20px];
+    }
+    .badage{
+      @apply flex flex-row justify-between items-center;
+      .deposit{
+        @apply bg-gray-700 text-white rounded-5 p-5 mr-5;
+      }
+      .cashIn{
+        @apply bg-gray-700 text-white rounded-5 p-5;
+      }
+    }
+  }
+  .balance{
+    @apply flex flex-col w-full justify-between  items-start w-full border-b-[1px] border-tableColor p-15;
+    .btc{
+      @apply text-[20px];
+    }
+  }
+  .refferal{
+    @apply flex flex-col justify-between w-full border-tableColor rounded-10 border-[1px] p-20 items-start mt-20 ;
+    .title{
+      @apply text-white text-[20px];
+    }
+    .main{
+      @apply flex flex-row justify-between items-center w-full;
+      .qrcode{
+        @apply border-[1px] p-20 border-white mr-90 rounded-10 basis-1/6;
+      }
+      .invite{
+        @apply flex flex-col -mt-30 items-center basis-5/6 justify-between w-full bg-none rounded-10 p-10;
+        .email{
+          @apply flex flex-col mt-10 justify-between items-start w-full;
+          .input{
+            @apply w-full text-white;
+            .inputBox{
+              @apply w-full rounded-10 h-50 text-[20px]  bg-[#1a1b1d] border-tableColor focus:border-yellow-300 focus:border-[1px] focus:ring-0 focus:outline-none mt-6;
+            }
+          }
+        }
+      }
+
+    }
+  }
+
+
+}
+
+

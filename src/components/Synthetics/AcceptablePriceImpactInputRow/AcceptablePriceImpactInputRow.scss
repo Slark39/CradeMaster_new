@@ -1,0 +1,22 @@
+.AcceptablePriceImpactInputRow-handle {
+  z-index: 1;
+  cursor: pointer;
+  position: relative;
+  display: inline-flex;
+  text-decoration: underline;
+  text-decoration-style: solid;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  text-decoration-color: var(--color-gray-300);
+  user-select: none;
+  color: var(--color-gray-300);
+
+  &:hover {
+    text-decoration-color: var(--color-white);
+    color: var(--color-white);
+  }
+}
+
+.AcceptablePriceImpactInputRow-na {
+  line-height: 2.3rem;
+}

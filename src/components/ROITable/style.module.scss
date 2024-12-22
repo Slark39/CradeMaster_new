@@ -1,0 +1,13 @@
+.tableContainer{
+  @apply flex flex-col justify-between p-4 items-center  rounded-10 mt-10 bg-tableColor w-full  lg:basis-[15%] max-lg:basis-1/2;
+
+  .row{
+      @apply flex flex-row justify-between items-center lg:text-[15px] max-lg:text-[10px] w-full;
+      .content{
+          @apply text-white;
+      }
+      .title{
+          @apply text-white;
+      }
+  }
+}

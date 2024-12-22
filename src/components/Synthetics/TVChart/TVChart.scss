@@ -1,0 +1,96 @@
+.chart-token-selector {
+  padding-left: 0.4rem;
+  margin-right: 0.5rem;
+
+  .Dropdown-current {
+    font-size: 2.1rem;
+    font-weight: 700;
+    color: var(--color-white);
+  }
+
+  .Dropdown-current-arrow {
+    font-size: var(--font-size-body-small);
+    color: hsla(0, 0%, 100%, 0.7);
+    margin-left: 1rem;
+    margin-top: -2px;
+  }
+
+  .Dropdown-options {
+    width: 15.8rem;
+    top: 4.6rem;
+    left: -0.6rem;
+  }
+
+  .Dropdown-option {
+    font-size: var(--font-size-body-small);
+    height: 3.4rem;
+    font-weight: 700;
+  }
+}
+
+.TVChart-top-card {
+  height: 58px;
+  display: flex;
+  align-items: center;
+}
+
+.Chart-header {
+  display: grid;
+  grid-template-columns: minmax(auto, max-content) auto 115px;
+  background-color: var(--color-slate-800);
+}
+
+.Chart-top-scrollable {
+  display: grid;
+  grid-template-columns: auto auto auto auto max-content;
+  grid-column-gap: 2.4rem;
+  align-items: center;
+  overflow: hidden;
+  overflow-x: auto;
+  position: relative;
+  margin-right: 15px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.Chart-top-scrollable-fade-right,
+.Chart-top-scrollable-fade-left {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  max-width: 50px;
+  height: 100%;
+  transition: opacity 0.2s ease;
+  z-index: 1;
+  pointer-events: all;
+}
+
+.Chart-top-scrollable-fade-left {
+  justify-content: flex-start;
+  background: linear-gradient(to left, transparent, var(--color-slate-800) 50%, var(--color-slate-800));
+}
+
+.Chart-top-scrollable-fade-right {
+  justify-content: flex-end;
+  background: linear-gradient(to right, transparent, var(--color-slate-800) 50%, var(--color-slate-800));
+}
+
+.Chart-header-value {
+  font-size: var(--font-size-body-medium);
+  line-height: var(--line-height-body-medium);
+}
+
+@media (max-width: 1100px) {
+  .Chart-24h-low {
+    display: block;
+  }
+
+  .Chart-header {
+    grid-template-columns: minmax(auto, max-content) auto 100px;
+  }
+}

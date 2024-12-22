@@ -1,0 +1,35 @@
+.tableContainer {
+    @apply flex w-full flex-col  mt-10 rounded-10 max-lg:basis-1/2 bg-tableColor p-3 lg:basis-[53%];
+
+    .flexible {
+      @apply overflow-x-auto h-[258px] overflow-auto sm:-mx-6 lg:-mx-8;
+      .inlineBlock {
+        @apply inline-block min-w-full py-2 sm:px-6 lg:px-8;
+        .overFlowHidden {
+          @apply overflow-hidden;
+          .tableStyle {
+            @apply min-w-full text-left font-light dark:text-white;
+
+            .thead {
+              @apply  font-medium   bg-tableColor  dark:border-white/10;
+              .th {
+                @apply text-white px-6 py-4 max-lg:text-[8px];
+              }
+            }
+            .tr {
+              @apply max-lg:text-[10px] dark:border-white/10;
+              .td1 {
+                @apply flex flex-row items-end whitespace-nowrap px-6 py-6 text-[#9179c4];
+              }
+              .td2 {
+                @apply whitespace-nowrap px-6 py-6 text-[#26959c];
+              }
+              .td3 {
+                @apply whitespace-nowrap px-6 py-6 text-white;
+              }
+            }
+          }
+        }
+      }
+    }
+  }

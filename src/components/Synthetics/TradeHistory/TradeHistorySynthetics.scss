@@ -1,0 +1,40 @@
+.TradeHistorySynthetics {
+  &-table {
+    width: max(100%, 900px) !important;
+
+    // Table causes global layout issues on mobile
+    margin-right: -10px;
+
+    table-layout: fixed;
+  }
+
+  &-controls-right {
+    display: flex;
+    gap: 0.5em;
+  }
+
+  &-filters {
+    display: flex;
+    gap: 0.5em;
+  }
+
+  &-pnl-fees-header {
+    text-align: end !important;
+  }
+
+  &-action-column {
+    width: 23%;
+  }
+  &-market-column {
+    width: 22%;
+  }
+  &-size-column {
+    width: 25%;
+  }
+  &-price-column {
+    width: 16%;
+  }
+  &-pnl-fees-column {
+    width: 14%;
+  }
+}

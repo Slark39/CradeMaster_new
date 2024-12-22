@@ -1,0 +1,41 @@
+@font-face {
+  font-family: 'MyCustomFont';
+  src: url('/fonts/arial_black.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.custom-font {
+  font-family: 'MyCustomFont', sans-serif;
+}
+
+.wrapper {
+  @apply flex flex-col  font-mainfont justify-between items-center bg-black h-auto p-10 w-full;
+  .header{
+    @apply flex lg:flex-row max-lg:flex-col justify-between items-end w-full;
+    .logo{
+      @apply flex basis-[75%] w-full mr-5;
+    }
+    .stateInfo{
+      @apply flex basis-[25%] w-full;
+    }
+  }
+  .main{
+    @apply flex lg:flex-row max-lg:flex-col max-lg:mt-10 justify-between items-start w-full;
+    .addInfo{
+        @apply flex flex-col justify-between items-center lg:basis-1/6 mr-20 w-full  h-auto;
+        .balAi{
+          @apply flex lg:flex-col max-lg:flex-row w-full justify-between items-center;
+        }
+        .signAnal{
+          @apply flex lg:flex-col max-lg:flex-row justify-between items-center w-full;
+          .analRoi{
+            @apply flex lg:flex-col max-lg:flex-row max-lg:ml-5 max-lg:h-[440px] max-lg:flex-col justify-between items-center w-full max-lg:basis-1/2;
+          }
+        }
+    }
+    .mainInfo{
+        @apply flex flex-col justify-between items-center basis-5/6  h-auto mt-5 w-full;
+    }
+  }
+}

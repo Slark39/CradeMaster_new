@@ -1,0 +1,96 @@
+.wrapper{
+  @apply flex flex-col justify-between items-center lg:w-1/3 max-lg:w-2/3 mx-auto mt-20;
+  .navbar{
+    @apply flex flex-row justify-between items-center w-full;
+    .time{
+      @apply text-white text-body-large;
+    }
+    .icon{
+      @apply flex flex-row justify-between items-center;
+    }
+  }
+  .header{
+    @apply flex flex-row justify-center items-center mt-30 w-full;
+    .backBtn{
+      @apply flex bg-[#1a1b1d] rounded-10 border-tableColor border-2 p-4;
+    }
+    .title{
+      @apply text-[40px] text-white;
+    }
+    .lightBtn{
+      @apply flex bg-[#1a1b1d] rounded-10 border-tableColor border-2 p-4;
+    }
+  }
+  .main{
+    @apply flex flex-col justify-between items-start mt-50 w-full;
+    .description{
+      @apply text-gray-500 text-left mt-50;
+    }
+    .get{
+      @apply flex flex-col items-center justify-between w-full;
+      .will{
+        @apply text-gray-500 text-[20px];
+      }
+      .xrp{
+        @apply text-white text-[25px];
+      }
+    }
+    .email{
+      @apply flex flex-col mt-20 justify-between items-start w-full;
+      .input{
+        @apply w-full text-white;
+        .inputBox{
+          @apply w-full rounded-10 h-50 text-[13px] bg-[#1a1b1d] border-tableColor focus:border-tableColor mt-6;
+        }
+      }
+    }
+    .check{
+      @apply flex flex-col justify-center items-center mt-30 w-full border-blue-500 p-40 border-[1px] rounded-10;
+      .checkBtn{
+        @apply flex;
+      }
+      .policy{
+        @apply text-gray-500;
+      }
+      .wallet{
+        @apply flex flex-col mt-20 justify-between items-start w-full;
+        .input{
+          @apply w-full text-white;
+          .inputBox{
+            @apply w-full rounded-10 h-50 text-[20px] bg-[#1a1b1d] border-tableColor focus:border-tableColor mt-6;
+          }
+        }
+      }
+      .btngroup{
+        @apply flex flex-row justify-center items-end mt-30;
+        .lightBtn{
+          @apply flex bg-[#1a1b1d] rounded-10 border-tableColor border-2 p-4 mr-20;
+        }
+      }
+    }
+    .state{
+      @apply flex flex-col w-full justify-between items-center mt-50;
+      .limit{
+        @apply flex flex-row justify-between items-center w-full mb-10;
+        .title{
+          @apply text-gray-500;
+        }
+      }
+    }
+    .stepper{
+      @apply w-full mt-20;
+    }
+    .note{
+      @apply w-full border-red-500 border-[1px] rounded-10 flex flex-col p-10 justify-between items-start mt-30;
+      .header{
+        @apply text-red-600;
+      }
+    }
+    .btn{
+      @apply flex justify-center items-center  bg-yellow-300 h-50 w-full rounded-10 hover:bg-yellow-400 text-[17px] text-slate-700 mt-40;
+    }
+  }
+  .footer{
+    @apply flex justify-center items-center mt-[360px];
+  }
+}

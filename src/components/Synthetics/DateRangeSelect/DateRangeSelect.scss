@@ -1,0 +1,133 @@
+.DateRangeSelect {
+  &-anchor {
+    position: relative;
+  }
+
+  &-popover {
+    position: relative;
+    z-index: 1000;
+
+    border-radius: var(--border-radius-sm);
+    background-color: var(--dark-blue-bg);
+    border: 1px solid var(--color-gray-800);
+  }
+
+  &-common-items {
+    padding: 1rem;
+    padding-bottom: 0;
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5em;
+  }
+
+  &-calendarWrapper {
+    color: var(--color-white);
+    background-color: inherit;
+    display: block;
+  }
+
+  &-monthAndYearPickers select {
+    background-color: var(--dark-blue-bg);
+    color: var(--color-white);
+
+    background-image: none;
+    padding: 10px;
+
+    option {
+      color: var(--color-white);
+      background-color: var(--dark-blue-bg);
+    }
+  }
+
+  &-dayNumber span {
+    color: var(--color-white);
+  }
+
+  &-nextPrevButton {
+    background-color: var(--color-cold-blue-900);
+  }
+
+  &-prevButton i {
+    border-color: transparent white transparent transparent;
+  }
+
+  &-prevButton:hover {
+    background-color: var(--color-slate-600);
+  }
+
+  &-nextButton i {
+    border-color: transparent transparent transparent white;
+  }
+
+  &-nextButton:hover {
+    background-color: var(--color-slate-600);
+  }
+
+  &-startEdge,
+  &-endEdge,
+  &-selected {
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+
+      background-color: var(--color-blue-600);
+      border-radius: 4px;
+      z-index: 0;
+    }
+  }
+
+  &-dayInPreview,
+  &-dayStartPreview,
+  &-dayEndPreview,
+  &-dayHovered {
+    color: var(--color-blue-600) !important;
+  }
+
+  &-dayStartPreview,
+  &-dayStartOfWeek &-dayStartPreview,
+  &-dayStartOfWeek &-dayInPreview,
+  &-dayStartOfWeek &-inRange,
+  &-dayStartOfMonth &-inRange,
+  &-dayStartOfMonth &-dayInPreview {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+  }
+
+  &-dayEndPreview,
+  &-dayEndOfWeek &-dayEndPreview,
+  &-dayEndOfWeek &-dayInPreview,
+  &-dayEndOfWeek &-inRange,
+  &-dayEndOfMonth &-inRange,
+  &-dayEndOfMonth &-dayInPreview {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+  }
+
+  &-dayStartOfWeek &-dayEndPreview,
+  &-dayEndOfWeek &-dayStartPreview,
+  &-dayStartOfMonth &-dayEndPreview,
+  &-dayEndOfMonth &-dayStartPreview {
+    border-radius: 4px;
+  }
+
+  &-dayHovered {
+    ::after {
+      border-radius: 4px !important;
+    }
+  }
+
+  &-dayDisabled {
+    background-color: var(--color-gray-900);
+  }
+
+  @media (max-width: 600px) {
+    &-month {
+      width: auto;
+    }
+  }
+}

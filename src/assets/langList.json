@@ -1,0 +1,4 @@
+[
+  { "id": 1, "name": "En", "unavailable": false, "symbol": "en" },
+  { "id": 2, "name": "中文", "unavailable": false, "symbol": "cn" }
+]

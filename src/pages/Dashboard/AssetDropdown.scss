@@ -1,0 +1,47 @@
+.AssetDropdown-wrapper {
+  position: relative;
+}
+
+.center-both {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dropdown-arrow {
+  margin-left: 0.8rem;
+  cursor: pointer;
+  color: var(--color-white);
+  opacity: 0.8;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.asset-item {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: var(--color-slate-800);
+  text-decoration: none;
+  padding: 0.85rem 0.8rem;
+  font-size: var(--font-size-body-medium);
+  text-align: left;
+
+  &:hover {
+    background: var(--dark-blue-hover);
+    color: var(--color-white);
+    border-radius: 0.4rem;
+  }
+
+  p {
+    margin: 0;
+    margin-left: 0.5rem;
+  }
+
+  .asset-item-icon {
+    max-height: 1.6rem;
+    max-width: 1.6rem;
+  }
+}

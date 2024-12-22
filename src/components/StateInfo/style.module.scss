@@ -1,0 +1,37 @@
+.wrapper{
+    @apply flex flex-row  justify-start items-start mt-15 w-full text-white;
+    .multilang{
+      @apply relative flex flex-row  z-10 items-center  justify-center rounded-4 bg-tableColor  h-[50px] max-lg:h-[40px] max-lg:basis-[25%] lg:mr-5 max-lg:mr-10 lg:basis-[20%] ;
+      .button{
+        @apply flex flex-col justify-start items-center;
+
+      }
+
+      .options {
+        @apply absolute top-40 left-0 w-full rounded-5;
+        .liwrapper {
+          @apply p-0;
+          .item{
+            @apply flex flex-row justify-between items-end w-full px-8 pt-5 pb-0 bg-tableColor hover:bg-gray-700;
+          }
+        }
+      }
+    }
+    .time1{
+        @apply flex animate-pulse justify-center items-center rounded-4 bg-tableColor  lg:h-[50px] max-lg:h-[40px] p-10 lg:basis-[30%] max-lg:basis-[25%] lg:mr-5 max-lg:mr-10 lg:text-[30px] max-lg:text-[20px];
+
+    }
+    .time{
+      @apply flex  justify-center items-center rounded-4 bg-tableColor  lg:h-[50px] max-lg:h-[40px] lg:basis-[30%] p-10 max-lg:basis-[25%] lg:mr-5 max-lg:mr-10 lg:text-[30px] max-lg:text-[20px];
+
+  }
+    .btn1{
+        @apply flex justify-center text-[25px]  cursor-not-allowed items-center rounded-4 bg-[#a40e0e]  h-[50px] max-lg:h-[40px] max-lg:basis-[25%] lg:mr-5 max-lg:mr-10 lg:basis-[25%] ;
+
+    }
+    .btn2{
+        @apply flex  justify-center text-[25px] cursor-pointer items-center rounded-4 hover:bg-[#a40e0e] bg-tableColor  mr-3 max-lg:h-[40px] h-[50px] max-lg:basis-[33.3%] lg:basis-[25%];
+
+    }
+}
+

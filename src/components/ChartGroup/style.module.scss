@@ -1,0 +1,15 @@
+.wrapper {
+    @apply flex lg:flex-row max-lg:flex-col w-full justify-between items-center basis-[70%] mt-20 ;
+    .col1{
+        @apply flex flex-col justify-between items-start w-full lg:mr-15;
+        .item{
+          @apply h-[200px] w-full;
+        }
+    }
+    .col2{
+        @apply flex flex-col justify-between  items-start w-full ;
+        .item{
+          @apply h-[200px] w-full;
+        }
+    }
+}
