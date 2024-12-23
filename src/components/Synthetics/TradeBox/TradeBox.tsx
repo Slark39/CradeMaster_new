@@ -152,7 +152,7 @@ import { MissedCoinsHint } from "../MissedCoinsHint/MissedCoinsHint";
 import "./TradeBox.scss";
 
 export type Props = {
-  setPendingTxns: (txns: any) => void;
+  setPendingTxns?: (txns: any) => void;
 };
 
 const tradeTypeIcons = {
@@ -177,7 +177,6 @@ const tradeTypeLabels = {
 //   [TradeType.Long]: msg`Swap`,
 //   [TradeType.Short]: msg`Invest`,
 // };
-
 
 export function TradeBox(p: Props) {
   const localizedTradeModeLabels = useLocalizedMap(tradeModeLabels);
@@ -1419,7 +1418,7 @@ export function TradeBox(p: Props) {
     <Button
       qa="confirm-trade-button"
       variant="primary-action"
-      className="mt-4 w-full [text-decoration:inherit]"
+      className="mt-4 w-full bg-yellow-300 [text-decoration:inherit]"
       onClick={onSubmit}
       disabled={submitButtonState.disabled && !shouldDisableValidationForTesting}
     >
@@ -1428,7 +1427,7 @@ export function TradeBox(p: Props) {
   );
   const button = tooltipContent ? (
     <Tooltip
-      className="w-full"
+      className="w-full bg-yellow-300"
       content={tooltipContent}
       handle={buttonContent}
       isHandlerDisabled
@@ -1441,9 +1440,9 @@ export function TradeBox(p: Props) {
 
   return (
     <>
-      <div>
+      <div className="w-full">
         <div data-qa="tradebox" className={`App-box SwapBox`}>
-          {/* <Tab
+          <Tab
             icons={tradeTypeIcons}
             options={Object.values(TradeType)}
             // options={['Long', 'Short']}
@@ -1452,7 +1451,7 @@ export function TradeBox(p: Props) {
             onChange={onTradeTypeChange}
             className="SwapBox-option-tabs"
             qa="trade-direction"
-          /> */}
+          />
 
           <Tab
             options={availableTradeModes}
@@ -1466,11 +1465,11 @@ export function TradeBox(p: Props) {
           />
           <form onSubmit={handleFormSubmit} ref={formRef}>
             {(isSwap || isIncrease) && renderTokenInputs()}
-            {/* {isTrigger && renderDecreaseSizeInput()} */}
+            {isTrigger && renderDecreaseSizeInput()}
             {isSwap && isLimit && renderTriggerRatioInput()}
-            {/* {isPosition && (isLimit || isTrigger) && renderTriggerPriceInput()} */}
+            {isPosition && (isLimit || isTrigger) && renderTriggerPriceInput()}
 
-            {/* <ExchangeInfo className="SwapBox-info-section" dividerClassName="App-card-divider">
+            <ExchangeInfo className="SwapBox-info-section" dividerClassName="App-card-divider">
               <ExchangeInfo.Group>
                 {maxAutoCancelOrdersWarning}
                 {isSwap && isLimit && (
@@ -1528,7 +1527,7 @@ export function TradeBox(p: Props) {
 
               {tradeboxWarningRows && <ExchangeInfo.Group>{tradeboxWarningRows}</ExchangeInfo.Group>}
               {triggerConsentRows && <ExchangeInfo.Group>{triggerConsentRows}</ExchangeInfo.Group>}
-            </ExchangeInfo> */}
+            </ExchangeInfo>
             <div className="Exchange-swap-button-container">{button}</div>
           </form>
         </div>

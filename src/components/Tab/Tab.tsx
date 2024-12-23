@@ -32,7 +32,7 @@ export default function Tab(props: Props) {
         const label = optionLabels && optionLabels[opt] ? optionLabels[opt] : opt;
         return (
           <div
-            className={cx("Tab-option flex items-center justify-center gap-8", "muted", { active: opt === option })}
+            className={cx("Tab-option flex items-center  justify-center  gap-8", "muted", { active: opt === option })}
             onClick={() => onClick(opt)}
             key={opt}
             data-qa={`${qa}-tab-${opt}`}

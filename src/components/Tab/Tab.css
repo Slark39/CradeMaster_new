@@ -19,22 +19,24 @@
 }
 
 .Tab.Tab__block .Tab-option {
+  background-color: #e3a008;
   text-align: center;
   padding: 0.8rem;
   padding-left: 1.5rem;
+  color: black;
   padding-right: 1.5rem;
 }
 
 .Tab.Tab__block .Tab-option:not(.disabled):not(.active):hover {
   color: var(--color-white);
-  background: var(--color-cold-blue-700);
+  background: #e3a008;
 }
 
 .Tab.Tab__block .Tab-option.active {
   opacity: 1;
   pointer-events: none;
-  background: var(--primary-btn-bg);
-  color: var(--color-white);
+  background: #faca15;
+  color: black;
 }
 
 .Tab.Tab__block .Tab-option.active .Tab-option-icon {

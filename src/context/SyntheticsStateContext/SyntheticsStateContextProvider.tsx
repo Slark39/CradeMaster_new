@@ -51,6 +51,7 @@ export type SyntheticsPageType =
   | "accounts"
   | "trade"
   | "pools"
+  | "swap"
   | "leaderboard"
   | "competitions"
   | "dashboard"

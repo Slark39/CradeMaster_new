@@ -56,6 +56,7 @@ import ScamRisk from "pages/ScamRisk";
 import ConfirmOrder from "pages/ConfrimOrder";
 import SecurityVerification from "pages/SecurityVerification";
 import UserInfo from "pages/UserInfo";
+import Swap from "pages/Swap";
 
 const LazyUiPage = lazy(() => import("pages/UiPage/UiPage"));
 export const UiPage = () => <Suspense fallback={<Trans>Loading...</Trans>}>{<LazyUiPage />}</Suspense>;
@@ -264,6 +265,11 @@ export function MainRoutes({ openSettings }: { openSettings: () => void }) {
       </Route>
       <Route exact path="/securityverification">
         <SecurityVerification />
+      </Route>
+      <Route exact path="/swap">
+        <SyntheticsStateContextProvider skipLocalReferralCode={false} pageType="trade">
+          <Swap />
+        </SyntheticsStateContextProvider>
       </Route>
       <Route exact path="/userinfo">
         <UserInfo />

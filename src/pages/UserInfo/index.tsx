@@ -1,22 +1,41 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Styles from "./style.module.scss";
 import QRCode from "qrcode.react";
 import Sidenav from "components/SidebarComponent";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { Link } from "react-router-dom";
 import { Dialog } from "@headlessui/react";
+import { createAvatar } from "@dicebear/core";
+import { lorelei } from "@dicebear/collection";
+import { MarketsList } from "components/Synthetics/MarketsList/MarketsList";
+import { SyntheticsStateContextProvider } from "context/SyntheticsStateContext/SyntheticsStateContextProvider";
 
 export default function UserInfo() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOpen1, setIsOpen1] = useState<boolean>(false);
   const { openConnectModal } = useConnectModal();
+  const avatar = useMemo(() => {
+    return createAvatar(lorelei, {
+      seed: Math.random().toString(36).substring(2, 15),
+      size: 128,
+      // ... other options
+    }).toDataUri();
+  }, []);
+  // const generateAvatar = () => {
+  //   const options = {}; // Customize options if needed
+  //   const avatars = new Avatars(Avataaars, options);
+
+  //   const randomSeed = Math.random().toString(36).substring(2, 15); // Generate a random seed
+  //   const svg = avatars.create(randomSeed); // Create an avatar SVG
+  //   setAvatarSvg(svg);
+  // };
   return (
     <div className={Styles.wrapper}>
       <Sidenav isOpen={true} setIsOpen={setIsOpen} />
       <div className={Styles.navbar}>
         <div className={Styles.user}>
           <div className={Styles.icon}>
-            <img src="/assets/images/1.PNG" alt="token image" className="h-[70px] w-[70px] rounded-5" />
+            <img src={avatar} alt="Avatar" className="h-[70px] w-[70px] rounded-5" />
           </div>
           <div className={Styles.username}>
             <div className={Styles.name}>User-22052</div>
@@ -155,20 +174,11 @@ export default function UserInfo() {
           </div>
         </div>
       </div>
-      <Dialog open={isOpen1} onClose={() => setIsOpen1(false)}>
-        <Dialog.Panel>
-          <Dialog.Title>Deactivate account</Dialog.Title>
-          <Dialog.Description>This will permanently deactivate your account</Dialog.Description>
-
-          <p>
-            Are you sure you want to deactivate your account? All of your data will be permanently removed. This action
-            cannot be undone.
-          </p>
-
-          <button onClick={() => setIsOpen1(false)}>Deactivate</button>
-          <button onClick={() => setIsOpen1(false)}>Cancel</button>
-        </Dialog.Panel>
-      </Dialog>
+      <div className="w-full">
+        <SyntheticsStateContextProvider skipLocalReferralCode={false} pageType="pools">
+          <MarketsList />
+        </SyntheticsStateContextProvider>
+      </div>
     </div>
   );
 }
