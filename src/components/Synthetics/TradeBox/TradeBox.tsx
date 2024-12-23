@@ -1092,7 +1092,7 @@ export function TradeBox(p: Props) {
           <button
             type="button"
             disabled={!isSwitchTokensAllowed}
-            className="Exchange-swap-ball bg-blue-500"
+            className="Exchange-swap-ball  bg-yellow-300"
             onClick={onSwitchTokens}
             data-qa="swap-ball"
           >
@@ -1417,8 +1417,8 @@ export function TradeBox(p: Props) {
   const buttonContent = (
     <Button
       qa="confirm-trade-button"
-      variant="primary-action"
-      className="mt-4 w-full bg-yellow-300 [text-decoration:inherit]"
+      // variant="primary-action"
+      className="mt-4 h-48 w-full rounded-4 bg-yellow-300 text-[30px] text-black [text-decoration:inherit] hover:bg-yellow-400"
       onClick={onSubmit}
       disabled={submitButtonState.disabled && !shouldDisableValidationForTesting}
     >
@@ -1442,7 +1442,7 @@ export function TradeBox(p: Props) {
     <>
       <div className="w-full">
         <div data-qa="tradebox" className={`App-box SwapBox`}>
-          <Tab
+          {/* <Tab
             icons={tradeTypeIcons}
             options={Object.values(TradeType)}
             // options={['Long', 'Short']}
@@ -1462,7 +1462,7 @@ export function TradeBox(p: Props) {
             option={tradeMode}
             onChange={onSelectTradeMode}
             qa="trade-mode"
-          />
+          /> */}
           <form onSubmit={handleFormSubmit} ref={formRef}>
             {(isSwap || isIncrease) && renderTokenInputs()}
             {isTrigger && renderDecreaseSizeInput()}
@@ -1483,9 +1483,11 @@ export function TradeBox(p: Props) {
               </ExchangeInfo.Group>
 
               <ExchangeInfo.Group>{isPosition && renderPositionControls()}</ExchangeInfo.Group>
+
               <ExchangeInfo.Group>
                 <TradeBoxOneClickTrading />
               </ExchangeInfo.Group>
+
               <ExchangeInfo.Group>
                 <LimitAndTPSLGroup />
               </ExchangeInfo.Group>

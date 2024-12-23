@@ -769,6 +769,7 @@ input.Exchange-swap-input.small {
 }
 
 .Exchange-swap-button {
+  background-color: #e3a008;
   display: block;
   width: 100%;
 }
@@ -796,20 +797,20 @@ input.Exchange-swap-input.small {
   border-radius: 3.1rem;
   cursor: pointer;
   user-select: none;
-  background: var(--primary-btn-bg);
+  /* background: var(--primary-btn-bg); */
   display: flex;
   justify-content: center;
   align-items: center;
   border: none;
-  color: var(--color-white);
+  color: black;
 }
 
 .Exchange-swap-ball:hover {
-  background: var(--primary-btn-hover);
+  background: #e3a008;
 }
 
 .Exchange-swap-ball:active {
-  background: var(--primary-btn-active);
+  background: #e3a008;
 }
 
 .Exchange-swap-ball:hover .Exchange-swap-ball-icon {

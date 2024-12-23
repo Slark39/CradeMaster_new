@@ -9,8 +9,10 @@ import { createAvatar } from "@dicebear/core";
 import { lorelei } from "@dicebear/collection";
 import { MarketsList } from "components/Synthetics/MarketsList/MarketsList";
 import { SyntheticsStateContextProvider } from "context/SyntheticsStateContext/SyntheticsStateContextProvider";
+import { useAccount } from "wagmi";
 
 export default function UserInfo() {
+  const account = useAccount();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOpen1, setIsOpen1] = useState<boolean>(false);
   const { openConnectModal } = useConnectModal();
@@ -85,7 +87,7 @@ export default function UserInfo() {
           <div>Get Started</div>
           <div>
             <button className="App-button-option App-card-option" onClick={openConnectModal}>
-              Connect Wallet
+              {account.address ? account.address : "Connect Wallet"}
             </button>
           </div>
         </div>

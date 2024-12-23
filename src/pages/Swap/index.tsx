@@ -10,6 +10,9 @@ export default function Swap() {
   return (
     <div className={Styles.wrapper}>
       <Sidenav isOpen={true} setIsOpen={setIsOpen} />
+      <div className={Styles.header}>
+        <div className={Styles.title}>Swap</div>
+      </div>
       <div className={Styles.main}>
         <TradeBox setPendingTxns={setPendingTxns} />
       </div>
