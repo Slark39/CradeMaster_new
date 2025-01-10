@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Styles from "./style.module.scss";
 import Sidenav from "components/SidebarComponent";
+import { FaArrowLeft } from "react-icons/fa";
 
 export default function ScamRisk() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -10,6 +11,15 @@ export default function ScamRisk() {
     <div className={Styles.wrapper}>
       <Sidenav isOpen={true} setIsOpen={setIsOpen} />
       <div className={Styles.header}>
+        <div>
+          {" "}
+          <button
+            onClick={(e) => (window.location.href = "/withdraw")}
+            className="rounded-md flex items-center gap-2 bg-none px-4 py-2 text-white  focus:outline-none"
+          >
+            <FaArrowLeft size={26} />
+          </button>
+        </div>
         <div className={Styles.title}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -26,6 +36,7 @@ export default function ScamRisk() {
             />
           </svg>
         </div>
+        <div></div>
       </div>
       <div className={Styles.main}>
         <div className={Styles.description}>Scam Risk Warning</div>

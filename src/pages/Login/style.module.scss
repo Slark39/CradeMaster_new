@@ -52,11 +52,20 @@
         }
       }
       .btn{
-        @apply flex justify-center items-center text-[17px] hover:bg-yellow-200 bg-yellow-300 text-black h-50 w-full rounded-10 mt-50;
+        @apply flex justify-center cursor-pointer items-center text-[17px] hover:bg-yellow-200 bg-yellow-300 text-black h-50 w-full rounded-10 mt-50;
       }
     }
   }
   .footer{
     @apply flex justify-center items-center mt-[20px];
   }
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

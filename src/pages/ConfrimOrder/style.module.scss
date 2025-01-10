@@ -10,7 +10,7 @@
     }
   }
   .header{
-    @apply flex flex-row justify-center items-center mt-30 w-full;
+    @apply flex flex-row justify-between items-center mt-30 w-full;
     .backBtn{
       @apply flex bg-[#1a1b1d] rounded-10 border-tableColor border-2 p-4;
     }

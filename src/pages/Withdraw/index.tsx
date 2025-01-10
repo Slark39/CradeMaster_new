@@ -49,6 +49,9 @@ export default function Withdraw() {
     }
   }, []);
   const [value, setValue] = useState<number>(17000);
+  const handleSubmit = () => {
+    localStorage.setItem("withdraw", value.toString());
+  };
   const handleChange = (number: number) => {
     setValue(number); // convert the value to a number
   };
@@ -105,7 +108,7 @@ export default function Withdraw() {
             onChange={(number) => handleChange(number)}
           />
         </div>
-        <a href="/confirmorder" className={Styles.btn}>
+        <a href="/confirmorder" className={Styles.btn} onClick={handleSubmit}>
           Submit
         </a>
         <div className={Styles.state}>

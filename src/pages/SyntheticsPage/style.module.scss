@@ -23,7 +23,7 @@
   .main{
     @apply flex lg:flex-row max-lg:flex-col max-lg:mt-10 justify-between items-start w-full;
     .addInfo{
-        @apply flex flex-col justify-between items-center lg:basis-1/6 mr-20 w-full  h-auto;
+        @apply flex flex-col lg:max-w-[277px] lg:min-w-[277px] justify-between items-center lg:basis-1/6 mr-20 w-full  h-auto;
         .balAi{
           @apply flex lg:flex-col max-lg:flex-row w-full justify-between items-center;
         }

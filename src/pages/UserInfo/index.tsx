@@ -6,7 +6,9 @@ import { useConnectModal } from "@rainbow-me/rainbowkit";
 import { Link } from "react-router-dom";
 import { Dialog } from "@headlessui/react";
 import { createAvatar } from "@dicebear/core";
+import { bottts } from "@dicebear/collection";
 import { lorelei } from "@dicebear/collection";
+import { FaRegClipboard } from "react-icons/fa";
 import { MarketsList } from "components/Synthetics/MarketsList/MarketsList";
 import { SyntheticsStateContextProvider } from "context/SyntheticsStateContext/SyntheticsStateContextProvider";
 import { useAccount } from "wagmi";
@@ -38,6 +40,8 @@ export default function UserInfo() {
   const [userEmail, setUserEmail] = useState<string>("");
   const [walletAddr, setWalletAddr] = useState<string>("");
   const [usdt, setUsdt] = useState<string>("");
+  const [copied, setCopied] = useState(false);
+  const [copied1, setCopied1] = useState(false);
   const [tron, setTron] = useState<string>("");
   const [userInfo, setUserInfo] = useState<UserInfo>();
   useEffect(() => {
@@ -58,12 +62,23 @@ export default function UserInfo() {
     }
   }, []);
 
+  const handleCopy = () => {
+    navigator.clipboard.writeText(`https://crademaster.com/register?referral=${userInfo?.referral_code}`);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000); // Reset after 2 seconds
+  };
+  const handleCopy1 = () => {
+    navigator.clipboard.writeText(`${userInfo?.referral_code}`);
+    setCopied1(true);
+    setTimeout(() => setCopied1(false), 2000); // Reset after 2 seconds
+  };
+
   const account = useAccount();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOpen1, setIsOpen1] = useState<boolean>(false);
   const { openConnectModal } = useConnectModal();
   const avatar = useMemo(() => {
-    return createAvatar(lorelei, {
+    return createAvatar(bottts, {
       seed: Math.random().toString(36).substring(2, 15),
       size: 128,
       // ... other options
@@ -111,9 +126,9 @@ export default function UserInfo() {
         <div className={Styles.title}>
           <div>Get Started</div>
           <div>
-            {/* <button className="App-button-option App-card-option" disabled onClick={openConnectModal}>
+            <button className="App-button-option App-card-option" onClick={openConnectModal}>
               {account.address ? account.address : "Connect Wallet"}
-            </button> */}
+            </button>
           </div>
         </div>
         <div className={Styles.progress}>
@@ -178,10 +193,10 @@ export default function UserInfo() {
         <div className={Styles.main}>
           <div className={Styles.qrcode}>
             <QRCode
-              size={60}
+              size={200}
               className=" rounded-10s"
               style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-              value="hey"
+              value={walletAddr || "No Wallet Connected"}
               viewBox={`0 0 0 0`}
             />
           </div>
@@ -189,25 +204,46 @@ export default function UserInfo() {
             <div className={Styles.email}>
               <p>Invite Link</p>
               <div className={Styles.input}>
-                <input
-                  type="text"
-                  className={Styles.inputBox}
-                  disabled
-                  value={`https://crademaster.com/register?referral=${userInfo?.referral_code}`}
-                  id="exampleFormControlInput1"
-                />
+                <div className="relative w-full">
+                  <input
+                    type="text"
+                    className={Styles.inputBox}
+                    disabled
+                    value={`https://crademaster.com/register?referral=${userInfo?.referral_code}`}
+                    id="exampleFormControlInput1"
+                  />
+
+                  {/* Clipboard Icon */}
+                  <button
+                    onClick={handleCopy}
+                    className="absolute right-6 top-1/2 -translate-y-1/2 transform text-gray-400 hover:text-yellow-300"
+                  >
+                    {copied ? "Copied!" : <FaRegClipboard size={18} />}
+                  </button>
+                </div>
               </div>
             </div>
             <div className={Styles.email}>
               <p>My Invitation Code</p>
               <div className={Styles.input}>
-                <input
-                  type="text"
-                  className={Styles.inputBox}
-                  disabled
-                  value={userInfo?.referral_code}
-                  id="exampleFormControlInput1"
-                />
+                <div className="relative w-full">
+                  <input
+                    type="text"
+                    className={Styles.inputBox}
+                    disabled
+                    value={userInfo?.referral_code}
+                    id="exampleFormControlInput1"
+                  />
+
+                  {/* Clipboard Icon */}
+                  <button
+                    onClick={handleCopy1}
+                    className="absolute right-6 top-1/2 -translate-y-1/2 transform text-gray-400 hover:text-yellow-300 focus:outline-none"
+                    title="Copy to clipboard"
+                  >
+                    {copied1 ? "Copied!" : <FaRegClipboard size={18} />}
+                  </button>
+                </div>
               </div>
             </div>
           </div>

@@ -4,8 +4,11 @@
   .row{
       @apply flex flex-row justify-between items-center lg:text-[15px] max-lg:text-[10px] w-full;
       .content{
-          @apply text-white basis-1/4;
+          @apply text-white basis-1/4 text-red-600;
       }
+      .content1{
+        @apply text-white basis-1/4 ;
+    }
       .title{
           @apply text-white basis-2/4;
       }

@@ -13,6 +13,7 @@ import axios from "axios";
 import { removeAuthToken } from "utils/authUtil";
 import { toast, ToastContainer } from "react-toastify";
 import { calculateRemainingTime } from "utils/utilize";
+import { FaSpinner } from "react-icons/fa";
 type Props = {
   signal: boolean;
   setSignal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -43,6 +44,7 @@ interface UserInfo {
 
 export default function StateInfo({ signal, setSignal }: Props) {
   const storedToken = localStorage.getItem("authToken");
+  const [loading, setLoading] = useState(false);
   const [userInfo, setUserInfo] = useState<UserInfo>();
   useEffect(() => {
     const storedUserInfoString = localStorage.getItem("userInfo");
@@ -131,51 +133,45 @@ export default function StateInfo({ signal, setSignal }: Props) {
   }, [signal]);
 
   const handleActivate = async () => {
-    if (!signal) {
+    if (!signal && !loading) {
+      setLoading(true); // Start spinner
       const url = "https://api.crademaster.com/api/activate/";
-      console.log("accesstoken", storedToken);
-      const token = storedToken; // Replace with your actual Bearer token
+      const token = storedToken;
 
-      // Make a POST request with Bearer token
-      await axios
-        .post(
+      try {
+        const response = await axios.post(
           url,
-          {
-            // Add the request body (data you want to send)
-            data: {},
-          },
+          { data: {} },
           {
             headers: {
-              Authorization: `Bearer ${token}`, // Add Bearer token to Authorization header
+              Authorization: `Bearer ${token}`,
             },
           }
-        )
-        .then((response) => {
-          if (storedToken && userInfo?.is_active_for_while) setSignal(true);
-          else window.location.href = "/login";
-          // Handle the response from the server
-          console.log("Response:", response.data);
-        })
-        .catch((error) => {
-          // Handle error if request fails
-          console.error("Error:", error.response.data);
-          if (error.response.data.code == "token_not_valid") {
-            removeAuthToken();
-            window.location.href = "/login";
-          }
-          if (error.response.data.non_field_errors) {
-            setSignal(false);
-            toast.warning(error.response.data.non_field_errors[0], {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-            });
-          }
-        });
+        );
+
+        if (storedToken && userInfo?.is_active_for_while) {
+          setSignal(true);
+        } else {
+          window.location.href = "/login";
+        }
+
+        console.log("Response:", response.data);
+      } catch (error: any) {
+        console.error("Error:", error.response.data);
+        if (error.response.data.code === "token_not_valid") {
+          removeAuthToken();
+          window.location.href = "/login";
+        }
+        if (error.response.data.non_field_errors) {
+          setSignal(false);
+          toast.warning(error.response.data.non_field_errors[0], {
+            position: "top-center",
+            autoClose: 5000,
+          });
+        }
+      } finally {
+        setLoading(false); // Stop spinner
+      }
     }
   };
 
@@ -234,12 +230,9 @@ export default function StateInfo({ signal, setSignal }: Props) {
 
       <div
         className={signal ? Styles.btn1 : Styles.btn2}
-        onClick={() => {
-          handleActivate();
-          // setIsCounting(true);
-        }}
+        onClick={!loading ? handleActivate : undefined} // Disable click when loading
       >
-        {signal ? t("ON") : t("OFF")}
+        {loading ? <FaSpinner className={Styles.spinner} /> : signal ? t("ON") : t("OFF")}
       </div>
       <span className={Styles.btn2} onClick={() => (storedToken ? setIsOpen(true) : (window.location.href = "/login"))}>
         MY

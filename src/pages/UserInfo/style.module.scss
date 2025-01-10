@@ -9,6 +9,9 @@
       }
       .username{
         @apply flex flex-col h-[70px] justify-between   items-start;
+        .name{
+          @apply mt-10;
+        }
         .social{
           @apply flex flex-row justify-start items-center;
         }

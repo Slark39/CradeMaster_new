@@ -10,6 +10,7 @@ import EmailVerification from "pages/EmailVerification";
 import Verification from "pages/Verification";
 import Button from "components/Button/Button";
 import { toast, ToastContainer } from "react-toastify";
+import { FaSpinner } from "react-icons/fa";
 
 export default function Register(props: any) {
   const location = useLocation();
@@ -24,6 +25,7 @@ export default function Register(props: any) {
   const [verifySuccess, setVerifySuccess] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [warning, setWarning] = useState<string>("");
+  const [loading, setLoading] = useState(false);
   const [warning1, setWarning1] = useState<string>("");
   const [warning2, setWarning2] = useState<string>("");
 
@@ -74,6 +76,7 @@ export default function Register(props: any) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true); // Start spinner
     try {
       const response = await axios.post("https://api.crademaster.com/auth/register/", {
         email,
@@ -85,39 +88,41 @@ export default function Register(props: any) {
         setSuccess(true);
       }
     } catch (error: any) {
-      setWarning(error.response.data.password1);
-      setWarning1(error.response.data.password2);
-      setWarning2(error.response.data.email);
+      setWarning(error.response?.data?.password1 || "");
+      setWarning1(error.response?.data?.password2 || "");
+      setWarning2(error.response?.data?.email || "");
       setError(error.response?.data?.message || "Something went wrong.");
+    } finally {
+      setLoading(false); // Stop spinner
     }
   };
 
   const handleVerify = async (e: React.FormEvent) => {
-    console.log("verification_code===>", verificationCode);
     e.preventDefault();
+    if (loading) return; // Prevent multiple clicks
+    setLoading(true); // Start spinner
+
+    console.log("verification_code===>", verificationCode);
     try {
       const response = await axios.post("https://api.crademaster.com/auth/register/verify-email/", {
         email,
         verification_code: verificationCode,
       });
+
       if (response.status === 200) {
         toast.success("Verification Success", {
           position: "top-center",
           autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
         });
+
         setTimeout(() => {
-          window.location.href = "/login"; // Replace with your desired route
-        }, 2000); // 2 seconds delay to show the success toast before redirect
-        // setVerifyRes(response.data.detail);
-        // setVerifySuccess(true);
+          window.location.href = "/login";
+        }, 2000);
       }
     } catch (error: any) {
       setError(error.response?.data?.message || "Something went wrong.");
+    } finally {
+      setLoading(false); // Stop spinner
     }
   };
 
@@ -238,14 +243,21 @@ export default function Register(props: any) {
                 />
               </div>
               <div className={Styles.policy}>
-                By creating an account, I agree to CradeMaster's Terms of Service and Privacy Policy
+                By creating an account, I agree to CradeMaster's{" "}
+                <a className="text-blue-600 underline" href="#">
+                  Terms of Service
+                </a>{" "}
+                and{" "}
+                <a className="text-blue-600 underline" href="#">
+                  Privacy Policy
+                </a>
               </div>
             </div>
             <div className="mt-5 text-red-500">{warning}</div>
             <div className="mt-5 text-red-500">{warning1}</div>
             <div className="mt-5 text-red-500">{warning2}</div>
-            <div className={Styles.btn} onClick={handleSubmit}>
-              Register
+            <div className={Styles.btn} onClick={!loading ? handleSubmit : undefined}>
+              {loading ? <FaSpinner className={Styles.spinner} /> : "Register"}
             </div>
           </div>
         ) : (
@@ -308,8 +320,8 @@ export default function Register(props: any) {
                 </div>
               </div>
 
-              <a className={Styles.btn} onClick={handleVerify}>
-                Submit
+              <a className={Styles.btn} onClick={!loading ? handleVerify : undefined}>
+                {loading ? <FaSpinner className={Styles.spinner} /> : "Submit"}
               </a>
             </div>
             {res}

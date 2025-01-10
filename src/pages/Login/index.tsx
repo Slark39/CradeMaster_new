@@ -8,10 +8,12 @@ const logoURL = "/assets/images/CM_logo.avif";
 import { toast, ToastContainer } from "react-toastify";
 import { setAuthToken, setUserInfo } from "utils/authUtil";
 import { useAuthStore } from "store/useAuthStore";
+import { FaSpinner } from "react-icons/fa";
 
 export default function Login() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isValid, setIsValid] = useState<boolean | null>(null); // To hold the validation state
 
@@ -37,6 +39,7 @@ export default function Login() {
   };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await axios.post("https://api.crademaster.com/auth/login/", {
         email,
@@ -60,9 +63,10 @@ export default function Login() {
           window.location.href = "/trade"; // Replace with your desired route
         }, 1000);
       }
-      console.log("login response data", response);
     } catch (error: any) {
       setError(error.response?.data?.message || "Something went wrong.");
+    } finally {
+      setLoading(false); // Stop spinner
     }
   };
 
@@ -132,11 +136,18 @@ export default function Login() {
               />
             </div>
             <div className={Styles.policy}>
-              By creating an account, I agree to CradeMaster's Terms of Service and Privacy Policy
+              By creating an account, I agree to CradeMaster's{" "}
+              <a className="text-blue-600 underline" href="#">
+                Terms of Service
+              </a>{" "}
+              and{" "}
+              <a className="text-blue-600 underline" href="#">
+                Privacy Policy
+              </a>
             </div>
           </div>
-          <div className={Styles.btn} onClick={handleSubmit}>
-            Login
+          <div className={Styles.btn} onClick={!loading ? handleSubmit : undefined}>
+            {loading ? <FaSpinner className={Styles.spinner} /> : "Login"}
           </div>
         </div>
       </div>

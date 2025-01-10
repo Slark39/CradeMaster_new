@@ -1,7 +1,7 @@
 .wrapper{
     @apply flex flex-row  justify-between lg:items-end max-lg:items-center  w-full;
     .log{
-      @apply flex flex-row cursor-pointer lg:justify-between max-lg:justify-start lg:mr-20 max-lg:mr-4 lg:basis-[10%] max-lg:basis-1/2;
+      @apply flex flex-row cursor-pointer lg:justify-between max-lg:justify-start lg:mr-30 max-lg:mr-4 lg:basis-[10%] max-lg:basis-1/2;
       .logo{
           @apply  lg:mr-2 max-lg:mr-5 ;
           .logoImage{

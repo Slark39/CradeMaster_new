@@ -8,8 +8,8 @@ export default function AnalysisTable() {
         <div className={Styles.title}>
           <p className="text-white">Date</p>
         </div>
-        <div className={Styles.content}>Percent</div>
-        <div className={Styles.content}>Amount</div>
+        <div className={Styles.content1}>Percent</div>
+        <div className={Styles.content1}>Amount</div>
       </div>
       <div className={Styles.row}>
         <div className={Styles.title}>
