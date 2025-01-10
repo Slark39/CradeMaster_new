@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Styles from "./style.module.scss";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { removeAuthToken, removeUserInfo, setAuthToken } from "utils/authUtil";
 const logoURL = "/assets/images/CM_logo.avif";
 
 type Props = {
@@ -23,6 +24,12 @@ const Sidenav = ({ isOpen, setIsOpen }: Props) => {
   // Function to close the sidenav
   const closeNav = (): void => {
     setIsOpen(false);
+  };
+
+  const handleLogout = (): void => {
+    removeAuthToken();
+    removeUserInfo();
+    window.location.href = "/login";
   };
 
   // Close the sidebar if clicked outside of it
@@ -153,9 +160,9 @@ const Sidenav = ({ isOpen, setIsOpen }: Props) => {
             <Link to="/withdraw">{t("Withdraw")}</Link>
           </div>
         </div>
-        <div className={Styles.acc}>
+        {/* <div className={Styles.acc}>
           <div className={Styles.icon}>
-            <Link to="/withdraw">
+            <div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -170,12 +177,12 @@ const Sidenav = ({ isOpen, setIsOpen }: Props) => {
                   d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"
                 />
               </svg>
-            </Link>
+            </div>
           </div>
           <div className={Styles.title}>
-            <Link to="/swap">{t("Swap")}</Link>
+            <div>{t("Swap")}</div>
           </div>
-        </div>
+        </div> */}
         <div className={Styles.acc}>
           <div className={Styles.icon}>
             <svg
@@ -194,32 +201,16 @@ const Sidenav = ({ isOpen, setIsOpen }: Props) => {
             </svg>
           </div>
           <div className={Styles.title}>
-            <Link to="/userinfo">{t("Contact")}</Link>
+            <button
+              onClick={(e) => {
+                window.open("https://t.me/brisen_li", "_blank");
+              }}
+            >
+              {t("Contact")}
+            </button>
           </div>
         </div>
-        <div className={Styles.acc}>
-          <div className={Styles.icon}>
-            <Link to="/login">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="size-20"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
-                />
-              </svg>
-            </Link>
-          </div>
-          <div className={Styles.title}>
-            <Link to="/login">{t("Login")}</Link>
-          </div>
-        </div>{" "}
+
         <div className={Styles.acc}>
           <div className={Styles.icon}>
             <svg
@@ -234,7 +225,7 @@ const Sidenav = ({ isOpen, setIsOpen }: Props) => {
             </svg>
           </div>
           <div className={Styles.title}>
-            <Link to="/logout ">{t("Logout")}</Link>
+            <button onClick={handleLogout}>{t("Logout")}</button>
           </div>
         </div>
       </div>

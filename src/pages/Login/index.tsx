@@ -1,12 +1,74 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 // import Link from "next/link";
 import { Link } from "react-router-dom";
 import Styles from "./style.module.scss";
+import axios from "axios";
+import { debounce } from "lodash";
 const logoURL = "/assets/images/CM_logo.avif";
+import { toast, ToastContainer } from "react-toastify";
+import { setAuthToken, setUserInfo } from "utils/authUtil";
+import { useAuthStore } from "store/useAuthStore";
 
 export default function Login() {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
+  const [isValid, setIsValid] = useState<boolean | null>(null); // To hold the validation state
+
+  const login = useAuthStore((state) => state.login);
+
+  const validateEmail = (email: string) => {
+    // Simple regex for validating an email
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email);
+  };
+
+  const debouncedValidateEmail = useCallback(
+    debounce((email: string) => {
+      const valid = validateEmail(email);
+      setIsValid(valid);
+    }, 500), // Delay of 500ms
+    []
+  );
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setEmail(value);
+    debouncedValidateEmail(value); // Call the debounced function
+  };
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("https://api.crademaster.com/auth/login/", {
+        email,
+        password,
+      });
+      if (response.status === 200) {
+        toast.success("Login Success!", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        login(response.data.access);
+        localStorage.setItem("isAuthenticated", "true");
+        setAuthToken(response.data.access);
+        setUserInfo(response.data.user);
+        setTimeout(() => {
+          window.location.href = "/trade"; // Replace with your desired route
+        }, 1000);
+      }
+      console.log("login response data", response);
+    } catch (error: any) {
+      setError(error.response?.data?.message || "Something went wrong.");
+    }
+  };
+
   return (
     <div className={Styles.wrapper}>
+      <ToastContainer />
       <div className={Styles.layout}>
         <div className={Styles.header}>
           <div className={Styles.title}>
@@ -29,13 +91,34 @@ export default function Login() {
           <div className={Styles.email}>
             <p>Email</p>
             <div className={Styles.input}>
-              <input type="text" className={Styles.inputBox} placeholder="Email" id="exampleFormControlInput1" />
+              <input
+                type="text"
+                className={Styles.inputBox}
+                onChange={handleEmailChange}
+                placeholder="Email"
+                id="exampleFormControlInput1"
+              />
+            </div>
+            <div>
+              {isValid === null ? (
+                <p></p>
+              ) : isValid ? (
+                <p style={{ color: "green" }}></p>
+              ) : (
+                <p style={{ color: "red" }}>Invalid email address.</p>
+              )}
             </div>
           </div>
           <div className={Styles.email}>
             <p>Password</p>
             <div className={Styles.input}>
-              <input type="password" className={Styles.inputBox} placeholder="password" id="exampleFormControlInput1" />
+              <input
+                type="password"
+                className={Styles.inputBox}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="password"
+                id="exampleFormControlInput1"
+              />
             </div>
           </div>
 
@@ -52,7 +135,9 @@ export default function Login() {
               By creating an account, I agree to CradeMaster's Terms of Service and Privacy Policy
             </div>
           </div>
-          <div className={Styles.btn}>Login</div>
+          <div className={Styles.btn} onClick={handleSubmit}>
+            Login
+          </div>
         </div>
       </div>
       <div className={Styles.footer}>

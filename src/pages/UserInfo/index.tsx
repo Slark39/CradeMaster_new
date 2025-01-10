@@ -11,7 +11,53 @@ import { MarketsList } from "components/Synthetics/MarketsList/MarketsList";
 import { SyntheticsStateContextProvider } from "context/SyntheticsStateContext/SyntheticsStateContextProvider";
 import { useAccount } from "wagmi";
 
+interface ReferredUser {
+  email: string;
+  date_joined: string; // Assuming the date string is in ISO 8601 format (e.g., "2025-01-09T15:40:04.980170Z")
+  earning: number; // Assuming earning is a number, can be floating point
+}
+
+// Interface for the main user info
+interface UserInfo {
+  email: string;
+  cm_wallet: string;
+  referral_code: string;
+  activation: {
+    percent: number;
+    duration: number;
+  };
+  is_active_for_while: boolean;
+  total_usage: number;
+  elapsed: number;
+  referred_users: ReferredUser[]; // Array of referred users
+  usdt_balance: number;
+  tron_balance: number;
+}
+
 export default function UserInfo() {
+  const [userEmail, setUserEmail] = useState<string>("");
+  const [walletAddr, setWalletAddr] = useState<string>("");
+  const [usdt, setUsdt] = useState<string>("");
+  const [tron, setTron] = useState<string>("");
+  const [userInfo, setUserInfo] = useState<UserInfo>();
+  useEffect(() => {
+    const storedUserInfoString = localStorage.getItem("userInfo");
+
+    if (storedUserInfoString) {
+      try {
+        // Parse the JSON string and update state
+        const parsedUserInfo: UserInfo = JSON.parse(storedUserInfoString);
+        setUserInfo(parsedUserInfo);
+        setUserEmail(parsedUserInfo.email);
+        setWalletAddr(parsedUserInfo.cm_wallet);
+        setUsdt(parsedUserInfo.usdt_balance.toString());
+        setTron(parsedUserInfo.tron_balance.toString());
+      } catch (error) {
+        console.error("Error parsing user info from localStorage:", error);
+      }
+    }
+  }, []);
+
   const account = useAccount();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOpen1, setIsOpen1] = useState<boolean>(false);
@@ -40,29 +86,8 @@ export default function UserInfo() {
             <img src={avatar} alt="Avatar" className="h-[70px] w-[70px] rounded-5" />
           </div>
           <div className={Styles.username}>
-            <div className={Styles.name}>User-22052</div>
-            <div className={Styles.social}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="size-15"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-              </svg>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="size-15"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-              </svg>
-            </div>
+            <div className={Styles.name}>{userEmail}</div>
+            <div className={Styles.social}>{walletAddr}</div>
           </div>
         </div>
         <div className={Styles.uid}>
@@ -86,9 +111,9 @@ export default function UserInfo() {
         <div className={Styles.title}>
           <div>Get Started</div>
           <div>
-            <button className="App-button-option App-card-option" onClick={openConnectModal}>
+            {/* <button className="App-button-option App-card-option" disabled onClick={openConnectModal}>
               {account.address ? account.address : "Connect Wallet"}
-            </button>
+            </button> */}
           </div>
         </div>
         <div className={Styles.progress}>
@@ -114,7 +139,7 @@ export default function UserInfo() {
                   Complete identity verification to access all Binance services
                 </p>
               </div>
-              <a href="/#/securityverification" className={Styles.btn}>
+              <a href="/securityverification" className={Styles.btn}>
                 Verify Now
               </a>
             </div>
@@ -127,13 +152,13 @@ export default function UserInfo() {
             <div className={Styles.pending}>Pending</div>
           </div>
           <div className={Styles.trade}>
-            <div className={Styles.title}>Trade</div>
-            <div className={Styles.pending}>Pending</div>
+            {/* <div className={Styles.title}>Trade</div> */}
+            {/* <div className={Styles.pending}>Pending</div> */}
           </div>
         </div>
       </div>
       <div className={Styles.estimated}>
-        <div className={Styles.label}>Estimated Balance@</div>
+        <div className={Styles.label}>Estimated Balance:</div>
         <div className={Styles.badage}>
           <div className={Styles.deposit}>
             <Link to="/deposit">Deposit</Link>
@@ -144,9 +169,9 @@ export default function UserInfo() {
         </div>
       </div>
       <div className={Styles.balance}>
-        <div className={Styles.btc}>0.00</div>
-        <div className={Styles.dolloar}>$0.00</div>
-        <div className={Styles.today}>Today's PnL + $0.00(0.00%)</div>
+        <div className={Styles.btc}>{tron} TRX</div>
+        <div className={Styles.dolloar}>{usdt} USDT</div>
+        {/* <div className={Styles.today}>Today's PnL + $0.00(0.00%)</div> */}
       </div>
       <div className={Styles.refferal}>
         <div className={Styles.title}>Referral</div>
@@ -164,13 +189,25 @@ export default function UserInfo() {
             <div className={Styles.email}>
               <p>Invite Link</p>
               <div className={Styles.input}>
-                <input type="text" className={Styles.inputBox} id="exampleFormControlInput1" />
+                <input
+                  type="text"
+                  className={Styles.inputBox}
+                  disabled
+                  value={`https://crademaster.com/register?referral=${userInfo?.referral_code}`}
+                  id="exampleFormControlInput1"
+                />
               </div>
             </div>
             <div className={Styles.email}>
               <p>My Invitation Code</p>
               <div className={Styles.input}>
-                <input type="text" className={Styles.inputBox} id="exampleFormControlInput1" />
+                <input
+                  type="text"
+                  className={Styles.inputBox}
+                  disabled
+                  value={userInfo?.referral_code}
+                  id="exampleFormControlInput1"
+                />
               </div>
             </div>
           </div>

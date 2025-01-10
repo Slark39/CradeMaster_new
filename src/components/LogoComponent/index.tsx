@@ -4,10 +4,50 @@ const logoURL = "/assets/images/CM_logo.avif";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
+import { convertHoursToString } from "utils/utilize";
 
+interface ReferredUser {
+  email: string;
+  created: string; // Assuming the date string is in ISO 8601 format (e.g., "2025-01-09T15:40:04.980170Z")
+  earning: number; // Assuming earning is a number, can be floating point
+}
+
+// Interface for the main user info
+interface UserInfo {
+  email: string;
+  cm_wallet: string;
+  referral_code: string;
+  activation: {
+    percent: number;
+    duration: number;
+  };
+  is_active_for_while: boolean;
+  total_usage: number;
+  elapsed: number;
+  referred_users: ReferredUser[]; // Array of referred users
+  usdt_balance: number;
+  tron_balance: number;
+}
 export default function LogoComponent() {
   const { t } = useTranslation();
+  const [totalUsage, setTotalUsage] = useState<string>("");
+  const [percent, setPercent] = useState<string>("");
   const [ipAddress, setIpAddress] = useState<string | null>(null);
+
+  const [userInfo, setUserInfo] = useState<UserInfo>();
+  useEffect(() => {
+    const storedUserInfoString = localStorage.getItem("userInfo");
+
+    if (storedUserInfoString) {
+      try {
+        const parsedUserInfo: UserInfo = JSON.parse(storedUserInfoString);
+        setTotalUsage(convertHoursToString(parsedUserInfo.total_usage));
+        setPercent(parsedUserInfo.activation.percent.toString());
+      } catch (error) {
+        console.error("Error parsing user info from localStorage:", error);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     // Fetch the user's IP address from ipify API
@@ -38,8 +78,12 @@ export default function LogoComponent() {
         <div className={Styles.connet}>
           {t("Connection IP")}:{ipAddress ? ipAddress : "Loading..."}
         </div>
-        <div className={Styles.usage}>{t("Total usage time")}: 09:03:28</div>
-        <div className={Styles.closing}>"{t("Estimated return based on the closing time")}":0.2%</div>
+        <div className={Styles.usage}>
+          {t("Total usage time")}:{totalUsage}
+        </div>
+        <div className={Styles.closing}>
+          "{t("Estimated return based on the closing time")}":{percent}%
+        </div>
       </div>
     </div>
   );

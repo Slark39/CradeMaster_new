@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 // import Link from "next/link";
 import Styles from "./style.module.scss";
 import { Link } from "react-router-dom";
@@ -6,6 +6,10 @@ import { debounce } from "lodash";
 import { useLocation } from "react-router-dom";
 const logoURL = "/assets/images/CM_logo.avif";
 import axios from "axios";
+import EmailVerification from "pages/EmailVerification";
+import Verification from "pages/Verification";
+import Button from "components/Button/Button";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function Register(props: any) {
   const location = useLocation();
@@ -13,13 +17,60 @@ export default function Register(props: any) {
   const referral = queryParams.get("referral");
   const [email, setEmail] = useState<string>("");
   const [res, setRes] = useState<string>("");
+  const [verifyres, setVerifyRes] = useState<string>("");
   const [password1, setPassword1] = useState<string>("");
   const [password2, setPassword2] = useState<string>("");
   const [success, setSuccess] = useState<boolean>(false);
+  const [verifySuccess, setVerifySuccess] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [warning, setWarning] = useState<string>("");
   const [warning1, setWarning1] = useState<string>("");
   const [warning2, setWarning2] = useState<string>("");
+
+  const [input1, setInput1] = useState("");
+  const [input2, setInput2] = useState("");
+  const [input3, setInput3] = useState("");
+  const [input4, setInput4] = useState("");
+  const [input5, setInput5] = useState("");
+  const [input6, setInput6] = useState("");
+
+  useEffect(() => {
+    // Combine all input values into one string
+    const newVerificationCode = input1 + input2 + input3 + input4 + input5 + input6;
+    setVerificationCode(newVerificationCode);
+  }, [input1, input2, input3, input4, input5, input6]);
+  // State for combined verification code
+  const [verificationCode, setVerificationCode] = useState("");
+
+  // Function to update the input value and combined verification code
+  const handleInputChange1 = (index: number, value: string) => {
+    // Update the respective input value
+    switch (index) {
+      case 1:
+        setInput1(value);
+        break;
+      case 2:
+        setInput2(value);
+        break;
+      case 3:
+        setInput3(value);
+        break;
+      case 4:
+        setInput4(value);
+        break;
+      case 5:
+        setInput5(value);
+        break;
+      case 6:
+        setInput6(value);
+        break;
+      default:
+        break;
+    }
+
+    // Update the combined verification code
+    setVerificationCode(input1 + input2 + input3 + input4 + input5 + input6);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,7 +80,6 @@ export default function Register(props: any) {
         password1,
         password2,
       });
-      console.log("res=======>", response.data);
       if (response.status === 201) {
         setRes(response.data.detail);
         setSuccess(true);
@@ -41,6 +91,36 @@ export default function Register(props: any) {
       setError(error.response?.data?.message || "Something went wrong.");
     }
   };
+
+  const handleVerify = async (e: React.FormEvent) => {
+    console.log("verification_code===>", verificationCode);
+    e.preventDefault();
+    try {
+      const response = await axios.post("https://api.crademaster.com/auth/register/verify-email/", {
+        email,
+        verification_code: verificationCode,
+      });
+      if (response.status === 200) {
+        toast.success("Verification Success", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+        setTimeout(() => {
+          window.location.href = "/login"; // Replace with your desired route
+        }, 2000); // 2 seconds delay to show the success toast before redirect
+        // setVerifyRes(response.data.detail);
+        // setVerifySuccess(true);
+      }
+    } catch (error: any) {
+      setError(error.response?.data?.message || "Something went wrong.");
+    }
+  };
+
   const [isValid, setIsValid] = useState<boolean | null>(null); // To hold the validation state
 
   // Email validation function using a regular expression
@@ -68,6 +148,7 @@ export default function Register(props: any) {
   };
   return (
     <div className={Styles.wrapper}>
+      <ToastContainer />
       <div className={Styles.layout}>
         <div className={Styles.header}>
           <div className={Styles.title}>
@@ -101,7 +182,7 @@ export default function Register(props: any) {
                 />
                 <div>
                   {isValid === null ? (
-                    <p>Start typing to validate email.</p>
+                    <p></p>
                   ) : isValid ? (
                     <p style={{ color: "green" }}></p>
                   ) : (
@@ -168,7 +249,77 @@ export default function Register(props: any) {
             </div>
           </div>
         ) : (
-          <div className="mb-[300px] mt-[200px] text-center text-[20px] text-gray-400">{res}</div>
+          <div className={Styles.verifymain}>
+            <div className={Styles.verifyheader}>
+              <div className={Styles.title}>Email Verification</div>
+            </div>
+            <div className={Styles.verifymain}>
+              <div className={Styles.description}>
+                Please enter the 6-digit verification code that was sent to alicent@gmail.com
+              </div>
+              <div className={Styles.email}>
+                <div className={Styles.input}>
+                  <input
+                    type="text"
+                    className={Styles.inputBox}
+                    onChange={(e) => handleInputChange1(1, e.target.value)}
+                    id="exampleFormControlInput1"
+                  />
+                </div>
+                <div className={Styles.input}>
+                  <input
+                    type="text"
+                    className={Styles.inputBox}
+                    onChange={(e) => handleInputChange1(2, e.target.value)}
+                    id="exampleFormControlInput1"
+                  />
+                </div>
+                <div className={Styles.input}>
+                  <input
+                    type="text"
+                    className={Styles.inputBox}
+                    onChange={(e) => handleInputChange1(3, e.target.value)}
+                    id="exampleFormControlInput1"
+                  />
+                </div>
+                <div className={Styles.input}>
+                  <input
+                    type="text"
+                    className={Styles.inputBox}
+                    onChange={(e) => handleInputChange1(4, e.target.value)}
+                    id="exampleFormControlInput1"
+                  />
+                </div>
+                <div className={Styles.input}>
+                  <input
+                    type="text"
+                    className={Styles.inputBox}
+                    onChange={(e) => handleInputChange1(5, e.target.value)}
+                    id="exampleFormControlInput1"
+                  />
+                </div>
+                <div className={Styles.input}>
+                  <input
+                    type="text"
+                    className={Styles.inputBox}
+                    onChange={(e) => handleInputChange1(6, e.target.value)}
+                    id="exampleFormControlInput1"
+                  />
+                </div>
+              </div>
+
+              <a className={Styles.btn} onClick={handleVerify}>
+                Submit
+              </a>
+            </div>
+            {res}
+            <div className={Styles.verifyfooter}>
+              didn't receive?
+              <Button className="hover:text-yellow-400" onClick={handleSubmit}>
+                Resend Email
+              </Button>
+            </div>
+          </div>
         )}
       </div>
       {!success ? (

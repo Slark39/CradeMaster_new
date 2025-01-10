@@ -1,5 +1,5 @@
 import { Trans } from "@lingui/macro";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import usePagination, { DEFAULT_PAGE_SIZE } from "components/Referrals/usePagination";
 import { getIcon } from "config/icons";
@@ -25,6 +25,30 @@ import { renderNetFeeHeaderTooltipContent } from "./NetFeeHeaderTooltipContent";
 import { NetFeeTooltip } from "./NetFeeTooltip";
 
 import "./MarketsList.scss";
+import { userInfo } from "os";
+
+interface ReferredUser {
+  email: string;
+  date_joined: string; // Assuming the date string is in ISO 8601 format (e.g., "2025-01-09T15:40:04.980170Z")
+  earning: number; // Assuming earning is a number, can be floating point
+}
+
+// Interface for the main user info
+interface UserInfo {
+  email: string;
+  cm_wallet: string;
+  referral_code: string;
+  activation: {
+    percent: number;
+    duration: number;
+  };
+  is_active_for_while: boolean;
+  total_usage: number;
+  elapsed: number;
+  referred_users: ReferredUser[]; // Array of referred users
+  usdt_balance: number;
+  tron_balance: number;
+}
 
 export function MarketsList() {
   const { chainId } = useChainId();
@@ -39,6 +63,21 @@ export function MarketsList() {
 }
 
 function MarketsListDesktop({ chainId, indexTokensStats }: { chainId: number; indexTokensStats: IndexTokenStat[] }) {
+  const [userInfo, setUserInfo] = useState<UserInfo>();
+  useEffect(() => {
+    const storedUserInfoString = localStorage.getItem("userInfo");
+
+    if (storedUserInfoString) {
+      try {
+        // Parse the JSON string and update state
+        const parsedUserInfo: UserInfo = JSON.parse(storedUserInfoString);
+        setUserInfo(parsedUserInfo);
+      } catch (error) {
+        console.error("Error parsing user info from localStorage:", error);
+      }
+    }
+  }, []);
+
   const { orderBy, direction, getSorterProps } = useSorterHandlers<
     "price" | "tvl" | "liquidity" | "utilization" | "unspecified"
   >();
@@ -46,85 +85,37 @@ function MarketsListDesktop({ chainId, indexTokensStats }: { chainId: number; in
 
   const filteredMarkets = useFilterSortMarkets({ searchText, indexTokensStats, orderBy, direction });
 
-  const { currentPage, currentData, pageCount, setCurrentPage } = usePagination(
-    `${chainId} ${direction} ${orderBy} ${searchText}`,
-    filteredMarkets,
-    DEFAULT_PAGE_SIZE
-  );
+  // const { currentPage, currentData, pageCount, setCurrentPage } = usePagination(
+  //   `${chainId} ${direction} ${orderBy} ${searchText}`,
+  //   filteredMarkets,
+  //   DEFAULT_PAGE_SIZE
+  // );
 
   return (
     <div className="my-15 rounded-4 bg-slate-800 text-left">
-      <div className="flex items-center px-16 py-8 text-16">
-        <Trans>GM Pools</Trans>
-        <img className="ml-5 mr-10" src={getIcon(chainId, "network")} width="16" alt="Network Icon" />
-        <SearchInput
-          size="s"
-          value={searchText}
-          setValue={setSearchText}
-          className="*:!text-16"
-          placeholder="Search Market"
-          autoFocus={false}
-        />
-      </div>
       <TableScrollFadeContainer>
         <table className="w-[max(100%,900px)]">
           <thead className="text-body-large">
             <TableTheadTr bordered>
+              <TableTh>Referral Member</TableTh>
               <TableTh>
-                <Trans>MARKETS</Trans>
+                <Sorter {...getSorterProps("price")}>Registration Date</Sorter>
               </TableTh>
               <TableTh>
-                <Sorter {...getSorterProps("price")}>
-                  <Trans>PRICE</Trans>
-                </Sorter>
+                <Sorter {...getSorterProps("tvl")}>Grade</Sorter>
               </TableTh>
               <TableTh>
-                <Sorter {...getSorterProps("tvl")}>
-                  <Trans comment="Total Value Locked">TVL</Trans>
-                </Sorter>
-              </TableTh>
-              <TableTh>
-                <Sorter {...getSorterProps("liquidity")}>
-                  <Trans>LIQUIDITY</Trans>
-                </Sorter>
-              </TableTh>
-              <TableTh>
-                <TooltipWithPortal
-                  handle={<Trans>NET RATE / 1 H</Trans>}
-                  renderContent={renderNetFeeHeaderTooltipContent}
-                />
-              </TableTh>
-              <TableTh>
-                <Sorter {...getSorterProps("utilization")}>
-                  <Trans>UTILIZATION</Trans>
-                </Sorter>
+                <Sorter {...getSorterProps("liquidity")}>Earnings</Sorter>
               </TableTh>
             </TableTheadTr>
           </thead>
           <tbody>
             {indexTokensStats.length > 0 &&
-              currentData.length > 0 &&
-              currentData.map((stats) => <MarketsListDesktopItem key={stats.token.address} stats={stats} />)}
-
-            {indexTokensStats.length > 0 && !currentData.length && (
-              <TableTr hoverable={false} bordered={false} className="h-[64.5px]">
-                <TableTd colSpan={6} className="align-top text-gray-400">
-                  <Trans>No markets found.</Trans>
-                </TableTd>
-              </TableTr>
-            )}
-
-            {indexTokensStats.length > 0 && currentData.length < DEFAULT_PAGE_SIZE && (
-              <MarketListSkeleton
-                invisible
-                count={currentData.length === 0 ? DEFAULT_PAGE_SIZE - 1 : DEFAULT_PAGE_SIZE - currentData.length}
-              />
-            )}
-            {!indexTokensStats.length && <MarketListSkeleton />}
+              userInfo?.referred_users.map((stats) => <MarketsListDesktopItem key={stats.email} stats={stats} />)}
           </tbody>
         </table>
       </TableScrollFadeContainer>
-      <BottomTablePagination page={currentPage} pageCount={pageCount} onPageChange={setCurrentPage} />
+      {/* <BottomTablePagination page={currentPage} pageCount={pageCount} onPageChange={setCurrentPage} /> */}
     </div>
   );
 }
@@ -190,97 +181,19 @@ function useFilterSortMarkets({
   return sortedMarkets;
 }
 
-function MarketsListDesktopItem({ stats }: { stats: IndexTokenStat }) {
-  const anyPool = stats.marketsStats[0];
+function MarketsListDesktopItem({ stats }: { stats: ReferredUser }) {
+  // const anyPool = stats.marketsStats[0];
 
-  const netFeePerHourLong = stats.bestNetFeeLong;
-  const netFeePerHourShort = stats.bestNetFeeShort;
-  const marketIndexName = getMarketIndexName(anyPool.marketInfo);
+  // const netFeePerHourLong = stats.bestNetFeeLong;
+  // const netFeePerHourShort = stats.bestNetFeeShort;
+  // const marketIndexName = getMarketIndexName(anyPool.marketInfo);
 
   return (
-    <TableTr key={stats.token.symbol} bordered={false} hoverable={false}>
-      <TableTd>
-        <div className="token-symbol-wrapper">
-          <div className="flex items-center">
-            <div className="App-card-title-info-icon min-h-40">
-              <img
-                src={importImage("ic_" + stats.token.symbol.toLocaleLowerCase() + "_40.svg")}
-                alt={stats.token.symbol}
-                width="40"
-              />
-            </div>
-            <div>
-              <div className="text-body-large">{marketIndexName}</div>
-            </div>
-            <div>
-              <AssetDropdown token={stats.token} />
-            </div>
-          </div>
-        </div>
-      </TableTd>
-      <TableTd>
-        {formatUsdPrice(stats.token.prices?.minPrice, {
-          visualMultiplier: stats.token.visualMultiplier,
-        })}
-      </TableTd>
-      <TableTd>
-        <TooltipWithPortal
-          className="nowrap"
-          handle={formatUsd(stats.totalPoolValue)}
-          renderContent={() => (
-            <>
-              {stats.marketsStats.map(({ marketInfo, poolValueUsd }) => (
-                <StatsTooltipRow
-                  key={marketInfo.marketTokenAddress}
-                  showDollar={false}
-                  showColon
-                  label={
-                    <div className="inline-flex items-start">
-                      <span>{getMarketIndexName(marketInfo)}</span>
-                      <span className="subtext leading-1">[{getMarketPoolName(marketInfo)}]</span>:
-                    </div>
-                  }
-                  value={formatUsd(poolValueUsd)}
-                />
-              ))}
-            </>
-          )}
-        />
-      </TableTd>
-      <TableTd>
-        <TooltipWithPortal
-          className="nowrap"
-          handle={formatUsd(stats.totalMaxLiquidity)}
-          renderContent={() => (
-            <>
-              {stats.marketsStats.map(({ marketInfo, maxLiquidity }) => (
-                <StatsTooltipRow
-                  key={marketInfo.marketTokenAddress}
-                  showDollar={false}
-                  showColon
-                  label={
-                    <div className="inline-flex items-start">
-                      <span>{getMarketIndexName(marketInfo)}</span>
-                      <span className="subtext leading-1">[{getMarketPoolName(marketInfo)}]</span>:
-                    </div>
-                  }
-                  value={formatUsd(maxLiquidity)}
-                />
-              ))}
-            </>
-          )}
-        />
-      </TableTd>
-      <TableTd>
-        <TooltipWithPortal
-          tooltipClassName="MarketList-netfee-tooltip"
-          handle={`${formatRatePercentage(netFeePerHourLong)} / ${formatRatePercentage(netFeePerHourShort)}`}
-          maxAllowedWidth={510}
-          position="bottom-end"
-          renderContent={() => <NetFeeTooltip marketStats={stats.marketsStats} />}
-        />
-      </TableTd>
-      <TableTd>{formatAmount(stats.totalUtilization, 2, 2)}%</TableTd>
+    <TableTr key={stats.email} bordered={false} hoverable={false}>
+      <TableTd>{stats.email}</TableTd>
+      <TableTd>{stats.date_joined}</TableTd>
+      <TableTd>Regular User</TableTd>
+      <TableTd>{stats.earning}</TableTd>
     </TableTr>
   );
 }

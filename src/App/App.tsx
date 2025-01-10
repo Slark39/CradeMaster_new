@@ -4,7 +4,6 @@ import { i18n } from "@lingui/core";
 import { Trans } from "@lingui/macro";
 import { I18nProvider } from "@lingui/react";
 import { useEffect, useState } from "react";
-import { HashRouter as Router } from "react-router-dom";
 import { SWRConfig } from "swr";
 
 import "react-toastify/dist/ReactToastify.css";
@@ -138,7 +137,7 @@ function App() {
       {app}
     </GlobalStateProvider>
   );
-  app = <Router>{app}</Router>;
+  // app = <Router>{app}</Router>;
 
   return app;
 }

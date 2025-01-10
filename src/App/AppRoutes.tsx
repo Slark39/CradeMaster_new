@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { ToastContainer, cssTransition } from "react-toastify";
 import { useDisconnect } from "wagmi";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 
 import {
   CURRENT_PROVIDER_LOCALSTORAGE_KEY,
@@ -118,7 +119,7 @@ export function AppRoutes() {
   useRealChainIdWarning();
 
   return (
-    <>
+    <Router>
       <div className="App">
         <div className="App-content">
           {isHome && <HomeRoutes showRedirectModal={showRedirectModal} />}
@@ -149,6 +150,6 @@ export function AppRoutes() {
       <SettingsModal isSettingsVisible={isSettingsVisible} setIsSettingsVisible={setIsSettingsVisible} />
       <SubaccountModal />
       <NotifyModal />
-    </>
+    </Router>
   );
 }

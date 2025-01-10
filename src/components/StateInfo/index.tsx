@@ -2,23 +2,97 @@ import React, { ReactNode, useEffect, useState } from "react";
 import Styles from "./style.module.scss";
 import { Listbox } from "@headlessui/react";
 import langList from "../../assets/langList.json";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { useLang } from "store/useLang";
 import { useTranslation } from "react-i18next";
 import i18n from "utils/multiLang";
 import Sidenav from "components/SidebarComponent";
 import { FaCheck } from "react-icons/fa";
+import { useAuthStore } from "store/useAuthStore";
+import axios from "axios";
+import { removeAuthToken } from "utils/authUtil";
+import { toast, ToastContainer } from "react-toastify";
+import { calculateRemainingTime } from "utils/utilize";
 type Props = {
   signal: boolean;
   setSignal: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
+interface ReferredUser {
+  email: string;
+  created: string; // Assuming the date string is in ISO 8601 format (e.g., "2025-01-09T15:40:04.980170Z")
+  earning: number; // Assuming earning is a number, can be floating point
+}
+
+// Interface for the main user info
+interface UserInfo {
+  email: string;
+  cm_wallet: string;
+  referral_code: string;
+  activation: {
+    percent: number;
+    duration: number;
+  };
+  is_active_for_while: boolean;
+  total_usage: number;
+  elapsed: number;
+  referred_users: ReferredUser[]; // Array of referred users
+  usdt_balance: number;
+  tron_balance: number;
+}
+
 export default function StateInfo({ signal, setSignal }: Props) {
+  const storedToken = localStorage.getItem("authToken");
+  const [userInfo, setUserInfo] = useState<UserInfo>();
+  useEffect(() => {
+    const storedUserInfoString = localStorage.getItem("userInfo");
+
+    if (storedUserInfoString) {
+      try {
+        const parsedUserInfo: UserInfo = JSON.parse(storedUserInfoString);
+        const remaintime = calculateRemainingTime(parsedUserInfo.activation.duration, parsedUserInfo.elapsed);
+        setTimeRemaining(remaintime);
+        setUserInfo(parsedUserInfo);
+        if (!parsedUserInfo.is_active_for_while) setSignal(true);
+
+        const fetchUserDetails = async () => {
+          try {
+            const response = await axios.get(
+              "https://api.crademaster.com/api/user-details/",
+
+              {
+                headers: {
+                  Authorization: `Bearer ${storedToken}`, // Add Bearer token to Authorization header
+                },
+              }
+            );
+
+            if (response.status === 200) {
+              // Successfully received additional user details
+              console.log("additional data=====>", response.data);
+            } else {
+              console.error("Failed to fetch user details.");
+            }
+          } catch (error) {
+            console.error("Error fetching user details:", error);
+            removeAuthToken();
+            window.location.href = "/login";
+            toast.error("Error fetching user details.");
+          }
+        };
+        fetchUserDetails();
+      } catch (error) {
+        console.error("Error parsing user info from localStorage:", error);
+      }
+    }
+  }, []);
+
   const [timeRemaining, setTimeRemaining] = useState(3600); // Start from 3600 seconds (1 hour)
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { lang, setLang } = useLang();
   const [selectedLang, setSelectedLang] = useState(langList[0]);
   const { t } = useTranslation();
+
   // const [signal, setsignal] = useState<boolean>(false);
   useEffect(() => {
     switch (lang) {
@@ -28,11 +102,11 @@ export default function StateInfo({ signal, setSignal }: Props) {
       case "cn":
         i18n.changeLanguage("cn");
         break;
-      case "ru":
+      case "rn":
         i18n.changeLanguage("ru");
         break;
       default:
-        i18n.changeLanguage("en");
+        i18n.changeLanguage("kn");
     }
   }, [lang]);
 
@@ -42,8 +116,10 @@ export default function StateInfo({ signal, setSignal }: Props) {
     if (signal) {
       intervalId = setInterval(() => {
         setTimeRemaining((prevTime) => {
-          if (prevTime <= 0) {
-            setTimeRemaining(3600);
+          if (prevTime <= 1) {
+            console.log("previous Time====>", prevTime);
+            clearInterval(intervalId);
+            setSignal(false);
           }
           return prevTime - 1;
         });
@@ -53,6 +129,55 @@ export default function StateInfo({ signal, setSignal }: Props) {
     // Cleanup interval when the component unmounts
     return () => clearInterval(intervalId);
   }, [signal]);
+
+  const handleActivate = async () => {
+    if (!signal) {
+      const url = "https://api.crademaster.com/api/activate/";
+      console.log("accesstoken", storedToken);
+      const token = storedToken; // Replace with your actual Bearer token
+
+      // Make a POST request with Bearer token
+      await axios
+        .post(
+          url,
+          {
+            // Add the request body (data you want to send)
+            data: {},
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // Add Bearer token to Authorization header
+            },
+          }
+        )
+        .then((response) => {
+          if (storedToken && userInfo?.is_active_for_while) setSignal(true);
+          else window.location.href = "/login";
+          // Handle the response from the server
+          console.log("Response:", response.data);
+        })
+        .catch((error) => {
+          // Handle error if request fails
+          console.error("Error:", error.response.data);
+          if (error.response.data.code == "token_not_valid") {
+            removeAuthToken();
+            window.location.href = "/login";
+          }
+          if (error.response.data.non_field_errors) {
+            setSignal(false);
+            toast.warning(error.response.data.non_field_errors[0], {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+            });
+          }
+        });
+    }
+  };
 
   // Calculate hours, minutes, and seconds
   const hours = Math.floor(timeRemaining / 3600);
@@ -64,7 +189,8 @@ export default function StateInfo({ signal, setSignal }: Props) {
 
   return (
     <div className={Styles.wrapper}>
-      <Sidenav isOpen={isOpen} setIsOpen={setIsOpen} />
+      <ToastContainer />
+      {storedToken ? <Sidenav isOpen={isOpen} setIsOpen={setIsOpen} /> : <></>}
       <div className={Styles.multilang}>
         <Listbox value={selectedLang} onChange={setSelectedLang}>
           <Listbox.Button className={Styles.button}>
@@ -109,13 +235,13 @@ export default function StateInfo({ signal, setSignal }: Props) {
       <div
         className={signal ? Styles.btn1 : Styles.btn2}
         onClick={() => {
-          setSignal(true);
+          handleActivate();
           // setIsCounting(true);
         }}
       >
         {signal ? t("ON") : t("OFF")}
       </div>
-      <span className={Styles.btn2} onClick={() => setIsOpen(true)}>
+      <span className={Styles.btn2} onClick={() => (storedToken ? setIsOpen(true) : (window.location.href = "/login"))}>
         MY
       </span>
     </div>

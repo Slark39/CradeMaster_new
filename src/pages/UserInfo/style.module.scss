@@ -80,7 +80,7 @@
       @apply flex flex-col ml-10 mr-10 justify-between items-start rounded-15    p-20 basis-1/4 h-[200px] border-gray-500 border-[1px] w-full;
       }
        .trade{
-      @apply flex flex-col justify-between items-start rounded-15   p-20 basis-1/4 h-[200px] border-gray-500 border-[1px] w-full;
+      @apply flex flex-col justify-between items-start rounded-15   p-20 basis-1/4 h-[200px] border-gray-500  w-full;
       }
       }
   }
@@ -101,9 +101,9 @@
   }
   .balance{
     @apply flex flex-col w-full justify-between  items-start w-full border-b-[1px] border-tableColor p-15;
-    .btc{
-      @apply text-[20px];
-    }
+    // .btc{
+    //   @apply text-[20px];
+    // }
   }
   .refferal{
     @apply flex flex-col justify-between w-full border-tableColor rounded-10 border-[1px] p-20 items-start mt-20 ;
@@ -122,7 +122,7 @@
           .input{
             @apply w-full text-white;
             .inputBox{
-              @apply w-full rounded-10 h-50 text-[20px]  bg-[#1a1b1d] border-tableColor focus:border-yellow-300 focus:border-[1px] focus:ring-0 focus:outline-none mt-6;
+              @apply w-full rounded-10 h-50 text-[16px]  bg-[#1a1b1d] border-tableColor focus:border-yellow-300 focus:border-[1px] focus:ring-0 focus:outline-none mt-6;
             }
           }
         }

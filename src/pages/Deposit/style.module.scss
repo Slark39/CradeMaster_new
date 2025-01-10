@@ -48,7 +48,7 @@
         .input{
           @apply w-full text-white;
           .inputBox{
-            @apply w-full rounded-10 h-50 text-[20px] focus:ring-yellow-300 bg-[#1a1b1d] border-tableColor focus:border-tableColor mt-6;
+            @apply w-full rounded-10 h-50 text-[13px] focus:ring-yellow-300 bg-[#1a1b1d] border-tableColor focus:border-tableColor mt-6;
           }
         }
       }

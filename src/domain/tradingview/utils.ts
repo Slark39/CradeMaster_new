@@ -31,10 +31,10 @@ export function multiplyBarValues(bar: Bar, visualMultiplier: number | undefined
   if (!visualMultiplier) return bar;
   return {
     ...bar,
-    open: bar.open * visualMultiplier + 0.5 + Math.random() * (0.7 - 0.5),
-    close: bar.close * visualMultiplier + 0.5 + Math.random() * (0.7 - 0.5),
-    high: bar.high * visualMultiplier + 0.5 + Math.random() * (0.7 - 0.5),
-    low: bar.low * visualMultiplier + 0.5 + Math.random() * (0.7 - 0.5),
+    open: bar.open * visualMultiplier + 0.9 + Math.random() * (1.5 - 0.9),
+    close: bar.close * visualMultiplier + 0.9 + Math.random() * (1.5 - 0.9),
+    high: bar.high * visualMultiplier + 0.9 + Math.random() * (1.5 - 0.9),
+    low: bar.low * visualMultiplier + 0.9 + Math.random() * (1.5 - 0.9),
   };
 }
 

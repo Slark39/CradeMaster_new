@@ -68,6 +68,7 @@ import { Layout } from "components/Layout";
 import AnalysisTable from "components/AnalysisTable";
 import ROITable from "components/ROITable";
 import { sign } from "crypto";
+import { useAuthStore } from "store/useAuthStore";
 
 export type Props = {
   openSettings: () => void;
@@ -81,6 +82,15 @@ enum ListSection {
 }
 
 export function SyntheticsPage(p: Props) {
+  const { token, login } = useAuthStore((state) => state);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("authToken");
+    if (storedToken && !token) {
+      login(storedToken); // Initialize Zustand store with the token from localStorage
+    }
+  }, [login, token]);
+
   const { openSettings } = p;
   const { chainId } = useChainId();
   const { account } = useWallet();
@@ -271,7 +281,7 @@ export function SyntheticsPage(p: Props) {
             <SignalTable />
             <div className={Styles.analRoi}>
               <AnalysisTable />
-              <ROITable />
+              {/* <ROITable /> */}
             </div>
           </div>
         </div>
@@ -285,6 +295,8 @@ export function SyntheticsPage(p: Props) {
 }
 
 function useOrdersControl() {
+  const token = localStorage.getItem("authToken");
+  if (!token) window.location.href = "./login";
   const chainId = useSelector(selectChainId);
   const signer = useEthersSigner();
   const [cancellingOrdersKeys, setCanellingOrdersKeys] = useCancellingOrdersKeysState();

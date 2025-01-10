@@ -1,12 +1,81 @@
 import React, { useEffect, useState } from "react";
 import Styles from "./style.module.scss";
 import { useTranslation } from "react-i18next";
+import { removeAuthToken } from "utils/authUtil";
+import { calculateRemainingTime } from "utils/utilize";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 type Props = {
   signal: boolean;
 };
 
+interface ReferredUser {
+  email: string;
+  created: string; // Assuming the date string is in ISO 8601 format (e.g., "2025-01-09T15:40:04.980170Z")
+  earning: number; // Assuming earning is a number, can be floating point
+}
+
+// Interface for the main user info
+interface UserInfo {
+  email: string;
+  cm_wallet: string;
+  referral_code: string;
+  activation: {
+    percent: number;
+    duration: number;
+  };
+  is_active_for_while: boolean;
+  total_usage: number;
+  elapsed: number;
+  referred_users: ReferredUser[]; // Array of referred users
+  usdt_balance: number;
+  tron_balance: number;
+}
 export default function AiTable({ signal }: Props) {
+  const storedToken = localStorage.getItem("authToken");
+  const [userInfo, setUserInfo] = useState<UserInfo>();
+  useEffect(() => {
+    const storedUserInfoString = localStorage.getItem("userInfo");
+
+    if (storedUserInfoString) {
+      try {
+        const parsedUserInfo: UserInfo = JSON.parse(storedUserInfoString);
+        const remaintime = calculateRemainingTime(parsedUserInfo.activation.duration, parsedUserInfo.elapsed);
+        setTimeRemaining(remaintime);
+        setUserInfo(parsedUserInfo);
+
+        const fetchUserDetails = async () => {
+          try {
+            const response = await axios.get(
+              "https://api.crademaster.com/api/user-details/",
+
+              {
+                headers: {
+                  Authorization: `Bearer ${storedToken}`, // Add Bearer token to Authorization header
+                },
+              }
+            );
+
+            if (response.status === 200) {
+              // Successfully received additional user details
+              console.log("additional data=====>", response.data);
+            } else {
+              console.error("Failed to fetch user details.");
+            }
+          } catch (error) {
+            console.error("Error fetching user details:", error);
+            removeAuthToken();
+            window.location.href = "/login";
+            toast.error("Error fetching user details.");
+          }
+        };
+        fetchUserDetails();
+      } catch (error) {
+        console.error("Error parsing user info from localStorage:", error);
+      }
+    }
+  }, []);
   const { t } = useTranslation();
   const [timeRemaining, setTimeRemaining] = useState(3600); // Start from 3600 seconds (1 hour)
   useEffect(() => {

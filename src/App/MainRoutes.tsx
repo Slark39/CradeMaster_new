@@ -57,6 +57,8 @@ import ConfirmOrder from "pages/ConfrimOrder";
 import SecurityVerification from "pages/SecurityVerification";
 import UserInfo from "pages/UserInfo";
 import Swap from "pages/Swap";
+import Verification from "pages/Verification";
+import PrivateRoute from "./PrivateRoute";
 
 const LazyUiPage = lazy(() => import("pages/UiPage/UiPage"));
 export const UiPage = () => <Suspense fallback={<Trans>Loading...</Trans>}>{<LazyUiPage />}</Suspense>;
@@ -242,38 +244,25 @@ export function MainRoutes({ openSettings }: { openSettings: () => void }) {
       <Route exact path="/register">
         <Register />
       </Route>
+      <Route exact path="/verify-email">
+        <Verification />
+      </Route>
       <Route exact path="/login">
         <Login />
       </Route>
-      <Route exact path="/verify">
-        <EmailVerification />
-      </Route>
-      <Route exact path="/sidebar">
-        <SidebarComponent />
-      </Route>
-      <Route exact path="/deposit">
-        <Deposit />
-      </Route>
-      <Route exact path="/withdraw">
-        <Withdraw />
-      </Route>
-      <Route exact path="/scamrisk">
-        <ScamRisk />
-      </Route>
-      <Route exact path="/confirmorder">
-        <ConfirmOrder />
-      </Route>
-      <Route exact path="/securityverification">
-        <SecurityVerification />
-      </Route>
+      <PrivateRoute exact path="/verify" component={EmailVerification}></PrivateRoute>
+      <PrivateRoute exact path="/sidebar" component={SidebarComponent}></PrivateRoute>
+      <PrivateRoute exact path="/deposit" component={Deposit}></PrivateRoute>
+      <PrivateRoute exact path="/withdraw" component={Withdraw}></PrivateRoute>
+      <PrivateRoute exact path="/scamrisk" component={ScamRisk}></PrivateRoute>
+      <PrivateRoute exact path="/confirmorder" component={ConfirmOrder}></PrivateRoute>
+      <PrivateRoute exact path="/securityverification" component={SecurityVerification}></PrivateRoute>
       <Route exact path="/swap">
         <SyntheticsStateContextProvider skipLocalReferralCode={false} pageType="trade">
           <Swap />
         </SyntheticsStateContextProvider>
       </Route>
-      <Route exact path="/userinfo">
-        <UserInfo />
-      </Route>
+      <PrivateRoute exact path="/userinfo" component={UserInfo}></PrivateRoute>
       {isDevelopment() && (
         <Route exact path="/ui">
           <UiPage />

@@ -6,44 +6,45 @@ export default function AnalysisTable() {
     <div className={Styles.tableContainer}>
       <div className={Styles.row}>
         <div className={Styles.title}>
-          <p className="text-primaryColor">{"Balance(USDT)"}</p>
+          <p className="text-white">Date</p>
         </div>
-        <div className={Styles.content}>1,302,507</div>
-      </div>
-
-      <div className={Styles.row}>
-        <div className={Styles.title}>
-          <p>Order available</p>
-        </div>
-        <div className={Styles.content}>1,245,135</div>
+        <div className={Styles.content}>Percent</div>
+        <div className={Styles.content}>Amount</div>
       </div>
       <div className={Styles.row}>
         <div className={Styles.title}>
-          <p>Entry amount</p>
+          <p className="text-white">2024-12-31</p>
         </div>
-        <div className={Styles.content}>57,372</div>
+        <div className={Styles.content}>0.7%</div>
+        <div className={Styles.content}>327</div>
       </div>
       <div className={Styles.row}>
         <div className={Styles.title}>
-          <p>Evaluation amount</p>
+          <p className="text-white">2024-12-30</p>
         </div>
-        <div className={Styles.content}>68,331</div>
+        <div className={Styles.content}>0.6%</div>
+        <div className={Styles.content}>299</div>
       </div>
       <div className={Styles.row}>
         <div className={Styles.title}>
-          <p>profit and loss</p>
+          <p className="text-white">2024-12-29</p>
         </div>
-        <div className={Styles.content}>
-          <p className="text-secondaryColor">10.059</p>
-        </div>
+        <div className={Styles.content}>1.2%</div>
+        <div className={Styles.content}>282</div>
       </div>
       <div className={Styles.row}>
         <div className={Styles.title}>
-          <p>ROI</p>
+          <p className="text-white">2024-12-28</p>
         </div>
-        <div className={Styles.content}>
-          <p className="text-secondaryColor">10.19</p>
+        <div className={Styles.content}>0.2%</div>
+        <div className={Styles.content}>180</div>
+      </div>
+      <div className={Styles.row}>
+        <div className={Styles.title}>
+          <p className="text-white">2024-12-27</p>
         </div>
+        <div className={Styles.content}>0.5%</div>
+        <div className={Styles.content}>150</div>
       </div>
     </div>
   );
