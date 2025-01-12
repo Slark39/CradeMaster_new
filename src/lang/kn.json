@@ -1,4 +1,12 @@
 {
 "Estimated return based on the closing time": "종료 시간을 기준으로 한 예상 수익",
-"Total usage time": "총 사용 시간"
+"Total usage time": "총 사용 시간",
+"Order available": "주문 가능",
+  "Entry amount": "진입 금액",
+  "Evaluation amount": "평가 금액",
+  "profit and loss": "손익",
+  "ROI": "투자 수익률",
+  "Date": "날짜",
+  "Percent": "백분율",
+  "Amount": "금액"
 }

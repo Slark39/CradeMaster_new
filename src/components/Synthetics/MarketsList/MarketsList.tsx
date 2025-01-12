@@ -38,12 +38,12 @@ interface UserInfo {
   email: string;
   cm_wallet: string;
   referral_code: string;
-  activation: {
-    percent: number;
-    duration: number;
+  availability: {
+    fee_percentage: number;
+    hours: number;
   };
-  is_active_for_while: boolean;
-  total_usage: number;
+  is_program_active: boolean;
+  total_execute: number;
   elapsed: number;
   referred_users: ReferredUser[]; // Array of referred users
   usdt_balance: number;

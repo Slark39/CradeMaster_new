@@ -10,7 +10,7 @@ body {
   left: 0;
   background-color: #181a20;
   overflow-x: hidden;
-  transition: 0.5s;
+  transition: 0.2s;
   padding-top: 19px;
 }
 
@@ -40,7 +40,7 @@ body {
     @apply flex lg:basis-[10%] lg:mr-20;
     }
     .title{
-      @apply basis-[90%] max-lg:hidden text-gray-300;
+      @apply basis-[90%] min-w-[200px] max-lg:hidden text-[16px] text-gray-300;
     }
   }
 }
@@ -80,7 +80,7 @@ body {
   text-decoration: none;
   color: #e5e5e5;
   display: block;
-  transition: 0.3s;
+  transition: 0.1s;
 }
 
 .sidenav a:hover {

@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useLayoutEffect, useState } from "react";
 import Styles from "./style.module.scss";
 import { Listbox } from "@headlessui/react";
 import langList from "../../assets/langList.json";
@@ -30,12 +30,12 @@ interface UserInfo {
   email: string;
   cm_wallet: string;
   referral_code: string;
-  activation: {
-    percent: number;
-    duration: number;
+  availability: {
+    fee_percentage: number;
+    hours: number;
   };
-  is_active_for_while: boolean;
-  total_usage: number;
+  is_program_active: boolean;
+  total_execute: number;
   elapsed: number;
   referred_users: ReferredUser[]; // Array of referred users
   usdt_balance: number;
@@ -46,16 +46,16 @@ export default function StateInfo({ signal, setSignal }: Props) {
   const storedToken = localStorage.getItem("authToken");
   const [loading, setLoading] = useState(false);
   const [userInfo, setUserInfo] = useState<UserInfo>();
-  useEffect(() => {
+  useLayoutEffect(() => {
     const storedUserInfoString = localStorage.getItem("userInfo");
 
     if (storedUserInfoString) {
       try {
         const parsedUserInfo: UserInfo = JSON.parse(storedUserInfoString);
-        const remaintime = calculateRemainingTime(parsedUserInfo.activation.duration, parsedUserInfo.elapsed);
+        const remaintime = calculateRemainingTime(parsedUserInfo.availability.hours, parsedUserInfo.elapsed);
         setTimeRemaining(remaintime);
         setUserInfo(parsedUserInfo);
-        if (!parsedUserInfo.is_active_for_while) setSignal(true);
+        if (!parsedUserInfo.is_program_active) setSignal(true);
 
         const fetchUserDetails = async () => {
           try {
@@ -149,7 +149,7 @@ export default function StateInfo({ signal, setSignal }: Props) {
           }
         );
 
-        if (storedToken && userInfo?.is_active_for_while) {
+        if (storedToken && userInfo?.is_program_active) {
           setSignal(true);
         } else {
           window.location.href = "/login";

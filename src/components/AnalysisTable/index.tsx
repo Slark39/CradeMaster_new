@@ -1,15 +1,17 @@
 import React from "react";
 import Styles from "./style.module.scss";
+import { useTranslation } from "react-i18next";
 
 export default function AnalysisTable() {
+  const { t } = useTranslation();
   return (
     <div className={Styles.tableContainer}>
       <div className={Styles.row}>
         <div className={Styles.title}>
-          <p className="text-white">Date</p>
+          <p className="text-white">{t("Date")}</p>
         </div>
-        <div className={Styles.content1}>Percent</div>
-        <div className={Styles.content1}>Amount</div>
+        <div className={Styles.content1}>{t("Percent")}</div>
+        <div className={Styles.content1}>{t("Amount")}</div>
       </div>
       <div className={Styles.row}>
         <div className={Styles.title}>

@@ -106,17 +106,17 @@ export default function SignalTable() {
                       <>
                         {/* Display the labels for 5m, 15m, and 45m */}
                         {pairs[index].map((pair, i) => (
-                          <>
-                            <td key={i} className={Styles.td3}>
+                          <React.Fragment key={i}>
+                            <td className={Styles.td3}>
                               <p className={pair[0] === "buy" ? "text-secondaryColor" : "text-thirdColor"}>{pair[0]}</p>
                             </td>
-                            <td key={i} className={Styles.td3}>
+                            <td className={Styles.td3}>
                               <p className={pair[1] === "buy" ? "text-secondaryColor" : "text-thirdColor"}>{pair[1]}</p>
                             </td>
-                            <td key={i} className={Styles.td3}>
+                            <td className={Styles.td3}>
                               <p className={pair[2] === "buy" ? "text-secondaryColor" : "text-thirdColor"}>{pair[2]}</p>
                             </td>
-                          </>
+                          </React.Fragment>
                         ))}
                       </>
                     ) : (

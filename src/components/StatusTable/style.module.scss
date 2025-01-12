@@ -2,7 +2,7 @@
     @apply flex w-full flex-col rounded-10 mt-3 bg-tableColor p-3 basis-[53%];
 
     .flexible {
-      @apply overflow-x-auto sm:-mx-6 lg:-mx-8;
+      @apply  h-[96px] overflow-y-scroll sm:-mx-6 lg:-mx-8;
       .inlineBlock {
         @apply inline-block min-w-full py-2 sm:px-6 lg:px-8;
         .overFlowHidden {

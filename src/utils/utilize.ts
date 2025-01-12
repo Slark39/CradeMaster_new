@@ -1,6 +1,6 @@
-export function calculateRemainingTime(activation: number, elapsed: number) {
-    // Convert activation (hours) to seconds
-    const totalDurationInSeconds = activation * 3600;
+export function calculateRemainingTime(availability: number, elapsed: number) {
+    // Convert availability (hours) to seconds
+    const totalDurationInSeconds = availability * 3600;
   
     // Calculate remaining time in seconds
     const remainingTimeInSeconds = totalDurationInSeconds - elapsed;
@@ -12,9 +12,9 @@ export function calculateRemainingTime(activation: number, elapsed: number) {
   }
 
 
-  export function convertHoursToString(total_usage: number): string {
+  export function convertHoursToString(total_execute: number): string {
     // Convert total usage (in hours) to total seconds
-    const totalSeconds = total_usage * 3600;
+    const totalSeconds = total_execute;
   
     // Calculate hours, minutes, and seconds from total seconds
     const hours = Math.floor(totalSeconds / 3600);

@@ -17,12 +17,13 @@ interface UserInfo {
   email: string;
   cm_wallet: string;
   referral_code: string;
-  activation: {
-    percent: number;
-    duration: number;
+  availability: {
+    fee_percentage: number;
+    hours: number;
   };
-  is_active_for_while: boolean;
-  total_usage: number;
+  is_program_active: boolean;
+  total_execute: number;
+  profit_percent: string;
   elapsed: number;
   referred_users: ReferredUser[]; // Array of referred users
   usdt_balance: number;
@@ -41,8 +42,8 @@ export default function LogoComponent() {
     if (storedUserInfoString) {
       try {
         const parsedUserInfo: UserInfo = JSON.parse(storedUserInfoString);
-        setTotalUsage(convertHoursToString(parsedUserInfo.total_usage));
-        setPercent(parsedUserInfo.activation.percent.toString());
+        setTotalUsage(convertHoursToString(parsedUserInfo.total_execute));
+        setPercent(parsedUserInfo.profit_percent);
       } catch (error) {
         console.error("Error parsing user info from localStorage:", error);
       }

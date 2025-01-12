@@ -11,21 +11,5 @@ import StatusTable from "../components/StatusTable";
 
 export const IndexPage: FC = () => {
   const [signal, setSignal] = useState(false);
-  return (
-    <Layout>
-      <div className={Styles.wrapper}>
-        <div className={Styles.addInfo}>
-          <LogoComponent />
-          <BalanceTable />
-          <AiTable signal={signal} />
-          <SignalTable />
-        </div>
-        <div className={Styles.mainInfo}>
-          <StateInfo setSignal={setSignal} signal={signal} />
-          <ChartGroup />
-          <StatusTable />
-        </div>
-      </div>
-    </Layout>
-  );
+  return null;
 };

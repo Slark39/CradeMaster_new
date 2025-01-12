@@ -17,12 +17,12 @@ interface UserInfo {
   email: string;
   cm_wallet: string;
   referral_code: string;
-  activation: {
-    percent: number;
-    duration: number;
+  availability: {
+    fee_percentage: number;
+    hours: number;
   };
-  is_active_for_while: boolean;
-  total_usage: number;
+  is_program_active: boolean;
+  total_execute: number;
   elapsed: number;
   referred_users: ReferredUser[]; // Array of referred users
   usdt_balance: number;
@@ -74,11 +74,11 @@ export default function Deposit() {
         </div>
         <div className="flex w-full flex-row items-center justify-between">
           <div>USDT balance :</div>
-          <div>{usdt} USDT</div>
+          <div>{usdt}</div>
         </div>
         <div className="flex w-full flex-row items-center justify-between">
           <div>TRON balance :</div>
-          <div>{tron} TRX</div>
+          <div>{tron}</div>
         </div>
 
         <div className={Styles.email}>

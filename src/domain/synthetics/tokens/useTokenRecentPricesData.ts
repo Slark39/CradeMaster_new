@@ -28,38 +28,38 @@ export function useTokenRecentPricesRequest(chainId: number): TokenPricesDataRes
 
   const { data, error } = useSequentialTimedSWR([chainId, oracleKeeperFetcher.url, "useTokenRecentPrices"], {
     refreshInterval: refreshPricesInterval,
-    fetcher: ([chainId]) =>
-      oracleKeeperFetcher.fetchTickers().then((priceItems) => {
-        const result: TokenPricesData = {};
+    // fetcher: ([chainId]) =>
+    //   oracleKeeperFetcher.fetchTickers().then((priceItems) => {
+    //     const result: TokenPricesData = {};
 
-        priceItems.forEach((priceItem) => {
-          let tokenConfig: any;
+    //     priceItems.forEach((priceItem) => {
+    //       let tokenConfig: any;
 
-          try {
-            tokenConfig = getToken(chainId, priceItem.tokenAddress);
-          } catch (e) {
-            // ignore unknown token errors
+    //       try {
+    //         tokenConfig = getToken(chainId, priceItem.tokenAddress);
+    //       } catch (e) {
+    //         // ignore unknown token errors
 
-            return;
-          }
+    //         return;
+    //       }
 
-          result[tokenConfig.address] = {
-            minPrice: parseContractPrice(BigInt(priceItem.minPrice), tokenConfig.decimals),
-            maxPrice: parseContractPrice(BigInt(priceItem.maxPrice), tokenConfig.decimals),
-          };
-        });
+    //       result[tokenConfig.address] = {
+    //         minPrice: parseContractPrice(BigInt(priceItem.minPrice), tokenConfig.decimals),
+    //         maxPrice: parseContractPrice(BigInt(priceItem.maxPrice), tokenConfig.decimals),
+    //       };
+    //     });
 
-        const wrappedToken = getWrappedToken(chainId);
+    //     const wrappedToken = getWrappedToken(chainId);
 
-        if (result[wrappedToken.address] && !result[NATIVE_TOKEN_ADDRESS]) {
-          result[NATIVE_TOKEN_ADDRESS] = result[wrappedToken.address];
-        }
+    //     if (result[wrappedToken.address] && !result[NATIVE_TOKEN_ADDRESS]) {
+    //       result[NATIVE_TOKEN_ADDRESS] = result[wrappedToken.address];
+    //     }
 
-        return {
-          pricesData: result,
-          updatedAt: Date.now(),
-        };
-      }),
+    //     return {
+    //       pricesData: result,
+    //       updatedAt: Date.now(),
+    //     };
+    //   }),
     refreshWhenHidden: true,
   });
 
