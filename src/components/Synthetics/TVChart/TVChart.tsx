@@ -273,7 +273,7 @@ export function TVChart({ chainId, symbol, color, linestyle, col, backCol }: Pro
   return (
     <div className="ExchangeChart tv ">
       {/* <TVChartHeader isMobile={isMobile} col={col} backCol={backCol} /> */}
-      <div className="ExchangeChart-bottom App-box App-box-border  " style={{ height: 350 }}>
+      <div className="ExchangeChart-bottom App-box App-box-border  " style={{ height: 340 }}>
         {symbol && (
           <TVChartContainer
             chartLines={chartLines}

@@ -9,11 +9,13 @@ import i18n from "utils/multiLang";
 import Sidenav from "components/SidebarComponent";
 import { FaCheck } from "react-icons/fa";
 import { useAuthStore } from "store/useAuthStore";
+import { useTimeState } from "store/useTimeState";
 import axios from "axios";
 import { removeAuthToken } from "utils/authUtil";
 import { toast, ToastContainer } from "react-toastify";
 import { calculateRemainingTime } from "utils/utilize";
 import { FaSpinner } from "react-icons/fa";
+import { setAutomine } from "viem/actions";
 type Props = {
   signal: boolean;
   setSignal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -43,6 +45,7 @@ interface UserInfo {
 }
 
 export default function StateInfo({ signal, setSignal }: Props) {
+  const { setTimeState } = useTimeState();
   const storedToken = localStorage.getItem("authToken");
   const [loading, setLoading] = useState(false);
   const [userInfo, setUserInfo] = useState<UserInfo>();
@@ -125,6 +128,8 @@ export default function StateInfo({ signal, setSignal }: Props) {
           }
           return prevTime - 1;
         });
+        setTimeState(formattedTime);
+        // setTimeState(timeRemaining)
       }, 1000);
     }
 

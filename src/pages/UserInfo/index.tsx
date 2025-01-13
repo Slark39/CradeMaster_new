@@ -12,6 +12,7 @@ import { FaRegClipboard } from "react-icons/fa";
 import { MarketsList } from "components/Synthetics/MarketsList/MarketsList";
 import { SyntheticsStateContextProvider } from "context/SyntheticsStateContext/SyntheticsStateContextProvider";
 import { useAccount } from "wagmi";
+import { useTranslation } from "react-i18next";
 
 interface ReferredUser {
   email: string;
@@ -37,6 +38,7 @@ interface UserInfo {
 }
 
 export default function UserInfo() {
+  const { t } = useTranslation();
   const [userEmail, setUserEmail] = useState<string>("");
   const [walletAddr, setWalletAddr] = useState<string>("");
   const [usdt, setUsdt] = useState<string>("");
@@ -149,14 +151,14 @@ export default function UserInfo() {
           <div className={Styles.verify}>
             <div className={Styles.left}>
               <div className={Styles.title}>
-                <p className="text-[15px]">Verify Account</p>
+                <p className="text-[15px]">{t("Verify Account")}</p>
                 <p className="text-[10px] text-gray-500">
-                  Complete identity verification to access all Binance services
+                  {t("Complete identity verification to access all CradeMaster services")}
                 </p>
               </div>
-              <a href="/securityverification" className={Styles.btn}>
+              <Link to="/securityverification" className={Styles.btn}>
                 Verify Now
-              </a>
+              </Link>
             </div>
             <div className={Styles.right}>
               <img src="/assets/images/kcc.svg" width={100} height={100} alt="token image" className="rounded-5" />

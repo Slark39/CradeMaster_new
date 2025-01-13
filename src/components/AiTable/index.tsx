@@ -22,12 +22,13 @@ interface UserInfo {
   cm_wallet: string;
   referral_code: string;
   availability: {
-    percent: number;
+    fee_percentage: number;
     hours: number;
   };
   is_program_active: boolean;
   total_execute: number;
   elapsed: number;
+  total_balance: number;
   referred_users: ReferredUser[]; // Array of referred users
   usdt_balance: number;
   tron_balance: number;
@@ -35,6 +36,9 @@ interface UserInfo {
 export default function AiTable({ signal }: Props) {
   const storedToken = localStorage.getItem("authToken");
   const [userInfo, setUserInfo] = useState<UserInfo>();
+  const [totalBalance, setTotalBalance] = useState<number>();
+  const [orderAvailable, setOrderAvailable] = useState<number>();
+  const [entryAmount, setEntryAmount] = useState<number>();
   useEffect(() => {
     const storedUserInfoString = localStorage.getItem("userInfo");
 
@@ -44,6 +48,9 @@ export default function AiTable({ signal }: Props) {
         const remaintime = calculateRemainingTime(parsedUserInfo.availability.hours, parsedUserInfo.elapsed);
         setTimeRemaining(remaintime);
         setUserInfo(parsedUserInfo);
+        setTotalBalance(parsedUserInfo.total_balance);
+        setOrderAvailable(parsedUserInfo.tron_balance);
+        setEntryAmount(parsedUserInfo.total_balance - parsedUserInfo.tron_balance);
 
         const fetchUserDetails = async () => {
           try {
@@ -116,7 +123,7 @@ export default function AiTable({ signal }: Props) {
         <div className={Styles.title}>
           <p>{t("Order available")}</p>
         </div>
-        <div className={Styles.content}>1,245,135</div>
+        <div className={Styles.content}>{totalBalance}</div>
       </div>
 
       <div className={Styles.row}>
@@ -124,14 +131,14 @@ export default function AiTable({ signal }: Props) {
           <p>{t("profit and loss")}</p>
         </div>
         <div className={Styles.content}>
-          <p className="text-secondaryColor">10.059</p>
+          <p className="text-secondaryColor">{orderAvailable}</p>
         </div>
       </div>
       <div className={Styles.row}>
         <div className={Styles.title}>
           <p>{t("Entry amount")}</p>
         </div>
-        <div className={Styles.content}>57,372</div>
+        <div className={Styles.content}>{entryAmount}</div>
       </div>
     </div>
   );

@@ -39,6 +39,10 @@
         .inputBox{
           @apply w-full rounded-10 h-50 text-[12px] bg-[#1a1b1d] border-tableColor focus:ring-yellow-300 focus:border-tableColor mt-6;
         }
+        .inputBox::-webkit-calendar-picker-indicator {
+          filter: invert(1);
+          cursor: pointer;
+        }
       }
     }
     .check{
@@ -63,4 +67,15 @@
   .footer{
     @apply flex justify-center items-center mt-[360px];
   }
+}
+
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1); /* Inverts the icon color to white */
+  cursor: pointer;
+}
+
+/* For Firefox */
+input[type="date"] {
+  color-scheme: dark; /* Adjusts the icon and input for dark themes */
 }

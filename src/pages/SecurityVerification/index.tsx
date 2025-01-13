@@ -4,31 +4,18 @@ import { Link } from "react-router-dom";
 import Styles from "./style.module.scss";
 import Stepper from "components/Stepper";
 import Sidenav from "components/SidebarComponent";
+import { useTranslation } from "react-i18next";
 
 export default function SecurityVerification() {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [text, setText] = useState("");
   return (
     <div className={Styles.wrapper}>
       <Sidenav isOpen={true} setIsOpen={setIsOpen} />
       <div className={Styles.main}>
         <div className={Styles.header}>
           <div className={Styles.title}>Security Verification</div>
-          <div className={Styles.exit}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="size-20"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
-              />
-            </svg>
-          </div>
         </div>
         <div className={Styles.email}>
           <p>Document Number</p>
@@ -40,6 +27,27 @@ export default function SecurityVerification() {
           <p>Expire Date</p>
           <div className={Styles.input}>
             <input type="date" className={Styles.inputBox} id="exampleFormControlInput1" />
+          </div>
+        </div>
+        <div className={Styles.email}>
+          <div className={Styles.input}>
+            <textarea
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              placeholder={t("Please write your name in English exactly as it is registered on Binance.")}
+              className={Styles.inputBox}
+              style={{
+                width: "100%",
+                height: "100px", // Adjust height to mimic a textarea
+                padding: "10px",
+                borderRadius: "8px",
+                fontSize: "14px",
+                resize: "none", // Prevent resizing
+                whiteSpace: "pre-wrap", // Allow text wrapping
+                overflowY: "auto", // Scroll when content overflows
+              }}
+              multiple // This attribute has no effect on input but added for clarity
+            />
           </div>
         </div>
         <div className={Styles.email}>
